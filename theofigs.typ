@@ -1,0 +1,338 @@
+#let theofig-kinds-list = (
+  "proof",
+  "lemma",
+  "remark", 
+  "theorem", 
+  "example",
+  "statement",
+  "corollary",
+  "algorithm",
+  "definition",
+)
+
+#let theofig-translations-list = (
+  "en": (
+    "proof":          "Proof",
+    "lemma":          "Lemma",
+    "remark":         "Remark", 
+    "theorem":        "Theorem",
+    "example":        "Example",
+    "statement":      "Statement",
+    "corollary":      "Corollary",
+    "algorithm":      "Algorithm",
+    "definition":     "Definition",
+  ),
+  "ru": (
+    "proof":          "Доказательство",
+    "lemma":          "Лемма",
+    "remark":         "Замечание", 
+    "theorem":        "Теорема",
+    "example":        "Пример",
+    "statement":      "Утверждение",
+    "corollary":      "Следствие",
+    "algorithm":      "Алгоритм",
+    "definition":     "Определение",
+  ),
+  "de": (
+    "proof":          "Beweis",
+    "lemma":          "Lemma",
+    "remark":         "Bemerkung", 
+    "theorem":        "Satz",
+    "example":        "Beispiel",
+    "statement":      "Aussage",
+    "corollary":      "Korollar",
+    "algorithm":      "Algorithmus",
+    "definition":     "Definition",
+  ),
+  "fr": (
+    "proof":          "Preuve",
+    "lemma":          "Lemme",
+    "remark":         "Remarque", 
+    "theorem":        "Théorème",
+    "example":        "Exemple",
+    "statement":      "Énoncé",
+    "corollary":      "Corollaire",
+    "algorithm":      "Algorithme",
+    "definition":     "Définition",
+  ),
+  "es": (
+    "proof":          "Demostración",
+    "lemma":          "Lema",
+    "remark":         "Observación", 
+    "theorem":        "Teorema",
+    "example":        "Ejemplo",
+    "statement":      "Enunciado",
+    "corollary":      "Corolario",
+    "algorithm":      "Algoritmo",
+    "definition":     "Definición",
+  ),
+  "it": (
+    "proof":          "Dimostrazione",
+    "lemma":          "Lemma",
+    "remark":         "Osservazione", 
+    "theorem":        "Teorema",
+    "example":        "Esempio",
+    "statement":      "Enunciato",
+    "corollary":      "Corollario",
+    "algorithm":      "Algoritmo",
+    "definition":     "Definizione",
+  ),
+  "pt": (
+    "proof":          "Prova",
+    "lemma":          "Lema",
+    "remark":         "Observação", 
+    "theorem":        "Teorema",
+    "example":        "Exemplo",
+    "statement":      "Enunciado",
+    "corollary":      "Corolário",
+    "algorithm":      "Algoritmo",
+    "definition":     "Definição",
+  ),
+  "pl": (
+    "proof":          "Dowód",
+    "lemma":          "Lemat",
+    "remark":         "Uwaga", 
+    "theorem":        "Twierdzenie",
+    "example":        "Przykład",
+    "statement":      "Stwierdzenie",
+    "corollary":      "Wniosek",
+    "algorithm":      "Algorytm",
+    "definition":     "Definicja",
+  ),
+  "cs": (
+    "proof":          "Důkaz",
+    "lemma":          "Lemma",
+    "remark":         "Poznámka", 
+    "theorem":        "Věta",
+    "example":        "Příklad",
+    "statement":      "Tvrzení",
+    "corollary":      "Důsledek",
+    "algorithm":      "Algoritmus",
+    "definition":     "Definice",
+  ),
+  "zh": (
+    "proof":          "证明",
+    "lemma":          "引理",
+    "remark":         "注释", 
+    "theorem":        "定理",
+    "example":        "例子",
+    "statement":      "命题",
+    "corollary":      "推论",
+    "algorithm":      "算法",
+    "definition":     "定义",
+  ),
+  "ja": (
+    "proof":          "証明",
+    "lemma":          "補題",
+    "remark":         "注", 
+    "theorem":        "定理",
+    "example":        "例",
+    "statement":      "命題",
+    "corollary":      "系",
+    "algorithm":      "アルゴリズム",
+    "definition":     "定義",
+  ),
+  "ko": (
+    "proof":          "증명",
+    "lemma":          "보조정리",
+    "remark":         "비고", 
+    "theorem":        "정리",
+    "example":        "예",
+    "statement":      "명제",
+    "corollary":      "따름정리",
+    "algorithm":      "알고리즘",
+    "definition":     "정의",
+  ),
+  "ar": (
+    "proof":          "برهان",
+    "lemma":          "لمّة",
+    "remark":         "ملاحظة", 
+    "theorem":        "نظرية",
+    "example":        "مثال",
+    "statement":      "قضية",
+    "corollary":      "نتيجة",
+    "algorithm":      "خوارزمية",
+    "definition":     "تعريف",
+  ),
+)
+
+
+#let theofig(
+  ..args,
+  kind: none, 
+  supplement: auto, 
+  numbering: auto, 
+  block-options: none,
+  figure-options: (:),
+  separator: ".",
+  translated-supplement: true,
+  qed: false,
+  body
+) = {
+  let caption = args.pos().at(0, default: none)
+  if (numbering != auto) {figure-options.insert("numbering", numbering)}
+  // set figure(supplement: supplement) if supplement != none
+  if (kind == none and supplement != auto) {
+    kind = lower(supplement)
+  }
+  figure(
+    placement: none, kind: kind, ..figure-options,
+    supplement: context { 
+      if (supplement == auto) {
+        theofig-translations-list.at(text.lang).at(kind)
+      } else if translated-supplement {
+        theofig-translations-list.at(text.lang).at(lower(supplement), default: supplement)
+      } else {
+        supplement
+      }
+    }, 
+    block(
+      width: 100%,
+      breakable: true,
+      // stroke: 1pt,
+      // radius: 2pt,
+      // inset: 5pt,
+      // if title-style != none { title = (title-style)(title) }
+      // if body-style != none { body = (body-style)(body) }
+
+      context {
+        let supplement = if (supplement == auto) {
+          theofig-translations-list.at(text.lang).at(kind)
+        } else if translated-supplement {
+          theofig-translations-list.at(text.lang).at(lower(supplement), default: supplement)
+        } else {
+          supplement
+        }
+
+        let separator = if (figure.caption.separator == auto) {
+          separator
+        } else {
+          figure.caption.separator
+        }
+
+        if numbering != none and figure.numbering != none {
+          supplement = [#supplement #counter(figure.where(kind: kind)).display(numbering)]
+        }
+        if caption != none { supplement = [#supplement (#caption)] }
+        supplement = [#supplement#separator]
+        let first-line-indent = par.first-line-indent
+        first-line-indent.insert("all", false)
+        set par(first-line-indent: first-line-indent)
+        align(
+          left, 
+          [
+            #box(figure.caption(supplement)) #body #if (qed) { h(1fr); math.qed }
+          ]
+        )
+      }
+
+    )
+  )
+}
+
+
+
+// #let theorem-figure-defaults = none
+#let theorem = theofig.with(kind: "theorem", supplement: "Theorem")
+#let lemma = theofig.with(kind: "lemma", supplement: "Lemma")
+#let statement = theofig.with(kind: "statement", supplement: "Statement")
+#let remark = theofig.with(kind: "remark", supplement: "Remark")
+#let corollary = theofig.with(kind: "corollary", supplement: "Corollary", numbering: none)
+#let example = theofig.with(kind: "example", supplement: "Example")
+#let definition = theofig.with(kind: "definition", supplement: "Definition")
+#let algorithm = theofig.with(kind: "algorithm", supplement: "Algorithm")
+#let proof = theofig.with(kind: "proof", numbering: none, qed: true)
+
+
+#let theofig-selector(..kinds, except: ()) = {
+  if (kinds.pos() == ()) { return theofig-selector(..theofig-kinds-list, except: except) } 
+  else {
+    return selector.or(
+      ..kinds.pos()
+      .filter(
+        kind => kind not in except
+      )
+      .map(
+        kind => figure.where(kind: kind)
+      )
+    )
+  }
+}
+
+
+#let show-figure-caption(..functions) = it => {
+  for func in functions.pos() {
+    it = [
+      #show figure.caption: func
+      #it
+    ]
+  }
+  it
+}
+
+#let theofig-style-list = (
+  "bold-title": (it, ..kinds) => {
+    show theofig-selector(..kinds): show-figure-caption(strong)
+    it
+  },
+  "italic-title": (it, ..kinds) => {
+    show theofig-selector(..kinds): show-figure-caption(emph)
+    it
+  },
+  "italic-body": (it, ..kinds) => {
+    show theofig-selector(..kinds): (it) => {
+      show figure.caption: emph
+      show: emph
+      it
+    }
+    it
+  },
+  "block": (it, ..kinds) => {
+    show theofig-selector(..kinds): (it) => {
+      show: block.with(stroke: 1pt, inset: 6pt, radius: 3pt)
+      it
+    }
+    it
+  },
+  "breakable": (it, ..kinds) => {
+    show theofig-selector(..kinds): (it) => {
+      set block(breakable: true)
+      it
+    }
+    it
+  },
+  "not-breakable": (it, ..kinds) => {
+    show theofig-selector(..kinds): (it) => {
+      set block(breakable: false)
+      it
+    }
+    it
+  },
+)
+
+#let theofig-style(..options, kinds: (), except: ()) = (it) => {
+  let kinds = kinds
+  if (kinds == ()) {
+    kinds = theofig-kinds-list.filter(x => x not in except)
+  }
+  for option in options.pos() {
+    it = (theofig-style-list.at(option))(it, ..kinds)
+  }
+  it
+}
+
+#let theofig-style-light = theofig-style.with("italic-title", "breakable")
+#let theofig-style-default = theofig-style.with("bold-title", "breakable")
+#let theofig-style-italic = theofig-style.with("bold-title", "italic-body", "breakable")
+#let theofig-style-block = theofig-style.with("bold-title", "block")
+#let theofig-style-block-italic = theofig-style.with("bold-title", "italic-body", "block")
+
+
+#let theofig-reset-counters(it, kinds: theofig-kinds-list, except: ()) = {
+  for kind in kinds {
+    if kind not in except {
+      counter(figure.where(kind: kind)).update(0)
+    }
+  }
+  it
+}

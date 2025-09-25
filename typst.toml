@@ -1,0 +1,11 @@
+[package]
+name = "theofig"
+version = "0.0.1"
+entrypoint = "theofig.typ"
+authors = ["Danila Bain <danila.bain@yandex.com>"]
+license = "MIT"
+description = "Simple theorem environments."
+# repository = ""
+keywords = ["theorem"]
+categories = ["model"]
+# exclude = ["example.*"]
