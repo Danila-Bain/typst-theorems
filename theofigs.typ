@@ -163,14 +163,17 @@
   supplement: auto, 
   numbering: auto, 
   block-options: none,
-  figure-options: (:),
+  figure-options: none,
   separator: ".",
   translated-supplement: true,
   qed: false,
   body
 ) = {
   let caption = args.pos().at(0, default: none)
-  if (numbering != auto) {figure-options.insert("numbering", numbering)}
+  if (numbering != auto) {
+    if (figure-options == none) {figure-options = (:) }
+    figure-options.insert("numbering", numbering)
+  }
   // set figure(supplement: supplement) if supplement != none
   if (kind == none and supplement != auto) {
     kind = lower(supplement)
@@ -189,6 +192,7 @@
     block(
       width: 100%,
       breakable: true,
+      ..block-options,
       // stroke: 1pt,
       // radius: 2pt,
       // inset: 5pt,
@@ -197,7 +201,7 @@
 
       context {
         let supplement = if (supplement == auto) {
-          theofig-translations-list.at(text.lang).at(kind)
+          theofig-translations-list.at(text.lang).at(kind, default: kind)
         } else if translated-supplement {
           theofig-translations-list.at(text.lang).at(lower(supplement), default: supplement)
         } else {
