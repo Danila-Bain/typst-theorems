@@ -229,7 +229,7 @@
         align(
           left, 
           [
-            #box(figure.caption(supplement)) #body #if (qed) { h(1fr); math.qed }
+            #box(strong(figure.caption(supplement))) #body #if (qed) { h(1fr); math.qed }
           ]
         )
       }
