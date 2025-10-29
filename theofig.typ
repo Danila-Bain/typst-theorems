@@ -10,6 +10,10 @@
   "definition",
 )
 
+/// Per-language list of default suppliments 
+/// ```example
+/// #theofig-translations-list()
+/// ```
 #let theofig-translations-list = (
   "en": (
     "proof":          "Proof",
@@ -248,8 +252,8 @@
 #let proof = theofig.with(kind: "proof", numbering: none, qed: true)
 
 
-#let theofig-selector(..kinds, except: ()) = {
-  if (kinds.pos() == ()) { return theofig-selector(..theofig-kinds-list, except: except) } 
+#let theofig-selector(..kinds, default: theofig-kinds-list, except: ()) = {
+  if (kinds.pos() == ()) { return theofig-selector(..default, except: except) } 
   else {
     return selector.or(
       ..kinds.pos()
