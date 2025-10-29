@@ -1,4 +1,4 @@
-#let theofig-kinds-list = (
+#let theofig-kinds = (
   "proof",
   "lemma",
   "remark", 
@@ -12,9 +12,9 @@
 
 /// Per-language list of default suppliments 
 /// ```example
-/// #theofig-translations-list()
+/// #theofig-translations()
 /// ```
-#let theofig-translations-list = (
+#let theofig-translations = (
   "en": (
     "proof":          "Proof",
     "lemma":          "Lemma",
@@ -186,9 +186,9 @@
     placement: none, kind: kind, ..figure-options,
     supplement: context { 
       if (supplement == auto) {
-        theofig-translations-list.at(text.lang).at(kind)
+        theofig-translations.at(text.lang).at(kind)
       } else if translated-supplement {
-        theofig-translations-list.at(text.lang).at(lower(supplement), default: supplement)
+        theofig-translations.at(text.lang).at(lower(supplement), default: supplement)
       } else {
         supplement
       }
@@ -205,9 +205,9 @@
 
       context {
         let supplement = if (supplement == auto) {
-          theofig-translations-list.at(text.lang).at(kind, default: kind)
+          theofig-translations.at(text.lang).at(kind, default: kind)
         } else if translated-supplement {
-          theofig-translations-list.at(text.lang).at(lower(supplement), default: supplement)
+          theofig-translations.at(text.lang).at(lower(supplement), default: supplement)
         } else {
           supplement
         }
@@ -252,7 +252,7 @@
 #let proof = theofig.with(kind: "proof", numbering: none, qed: true)
 
 
-#let theofig-selector(..kinds, default: theofig-kinds-list, except: ()) = {
+#let theofig-selector(..kinds, default: theofig-kinds, except: ()) = {
   if (kinds.pos() == ()) { return theofig-selector(..default, except: except) } 
   else {
     return selector.or(
@@ -278,7 +278,7 @@
   it
 }
 
-#let theofig-style-list = (
+#let theofig-styles = (
   "bold-title": (it, ..kinds) => {
     show theofig-selector(..kinds): show-figure-caption(strong)
     it
@@ -321,10 +321,10 @@
 #let theofig-style(..options, kinds: (), except: ()) = (it) => {
   let kinds = kinds
   if (kinds == ()) {
-    kinds = theofig-kinds-list.filter(x => x not in except)
+    kinds = theofig-kinds.filter(x => x not in except)
   }
   for option in options.pos() {
-    it = (theofig-style-list.at(option))(it, ..kinds)
+    it = (theofig-styles.at(option))(it, ..kinds)
   }
   it
 }
@@ -336,7 +336,7 @@
 #let theofig-style-block-italic = theofig-style.with("bold-title", "italic-body", "block")
 
 
-#let theofig-reset-counters(it, kinds: theofig-kinds-list, except: ()) = {
+#let theofig-reset-counters(it, kinds: theofig-kinds, except: ()) = {
   for kind in kinds {
     if kind not in except {
       counter(figure.where(kind: kind)).update(0)

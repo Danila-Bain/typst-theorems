@@ -31,7 +31,7 @@ This document at the moment consists \ of the examples that author wants to work
 
   = Styling 
 
-  #show figure: it => if it.kind in theofig-kinds-list {
+  #show figure: it => if it.kind in theofig-kinds {
     show figure.caption: strong
     it
   } else {it}
