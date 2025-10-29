@@ -1,4 +1,4 @@
-#import "../theofigs.typ": *
+#import "../theofig.typ": *
 #set page(paper: "a6", margin: 6mm)
 #show ref: set text(blue)
 
@@ -31,8 +31,8 @@
 
 // do that in preambule in place of
 // `#show theofig-selector(): show-figure-caption(strong)`
-#theofig-kinds-list.insert(-1, "problem")
-#show theofig-selector(..theofig-kinds-list): show-figure-caption(strong) 
+#theofig-kinds.insert(-1, "problem")
+#show theofig-selector(..theofig-kinds): show-figure-caption(strong) 
 
 #problem[Custom element with generic styling.]
 
@@ -54,5 +54,5 @@
   #set text(lang: "ja")
   #theorem[#lorem(5)]
 
-  Supported languages: #for lang in theofig-translations-list.keys() [#lang, ]
+  Supported languages: #for lang in theofig-translations.keys() [#lang, ]
 ]

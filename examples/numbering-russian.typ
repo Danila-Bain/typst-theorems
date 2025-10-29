@@ -1,4 +1,4 @@
-#import "../theofigs.typ": *
+#import "../theofig.typ": *
 #set page(paper: "a6", margin: 6mm)
 #set text(10pt, lang: "ru")
 

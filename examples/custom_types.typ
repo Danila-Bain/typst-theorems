@@ -1,4 +1,5 @@
-#import "../theofigs.typ": *
+#import "../theofig.typ": *
+
 #set page(paper: "a6", margin: 10mm)
 
 #let problem = theofig.with(supplement: "Problem")
@@ -7,9 +8,9 @@
 #let solution = theofig.with(supplement: "Solution", numbering: none)
 #let hint = theofig.with(supplement: "Hint", numbering: none, separator: ":")
 
-#theofig-kinds-list.insert(-1, "problem")
-#theofig-kinds-list.insert(-1, "solution")
-#show: theofig-style-default(kinds: theofig-kinds-list)
+#theofig-kinds.insert(-1, "problem")
+#theofig-kinds.insert(-1, "solution")
+#show: theofig-style-default(kinds: theofig-kinds)
 
 #show: theofig-style("italic-title", kinds: ("hint",))
 
