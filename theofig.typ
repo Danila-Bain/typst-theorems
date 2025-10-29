@@ -252,19 +252,16 @@
 #let proof = theofig.with(kind: "proof", numbering: none, qed: true)
 
 
-#let theofig-selector(..kinds, default: theofig-kinds, except: ()) = {
-  if (kinds.pos() == ()) { return theofig-selector(..default, except: except) } 
-  else {
-    return selector.or(
-      ..kinds.pos()
-      .filter(
-        kind => kind not in except
-      )
-      .map(
-        kind => figure.where(kind: kind)
-      )
+#let figure-where-kind-in(kinds, except: ()) = {
+  return selector.or(
+    ..kinds
+    .filter(
+      kind => kind not in except
     )
-  }
+    .map(
+      kind => figure.where(kind: kind)
+    )
+  )
 }
 
 
@@ -279,38 +276,38 @@
 }
 
 #let theofig-styles = (
-  "bold-title": (it, ..kinds) => {
-    show theofig-selector(..kinds): show-figure-caption(strong)
+  "bold-title": (it, kinds) => {
+    show figure-where-kind-in(kinds): show-figure-caption(strong)
     it
   },
-  "italic-title": (it, ..kinds) => {
-    show theofig-selector(..kinds): show-figure-caption(emph)
+  "italic-title": (it, kinds) => {
+    show figure-where-kind-in(kinds): show-figure-caption(emph)
     it
   },
-  "italic-body": (it, ..kinds) => {
-    show theofig-selector(..kinds): (it) => {
+  "italic-body": (it, kinds) => {
+    show figure-where-kind-in(kinds): (it) => {
       show figure.caption: emph
       show: emph
       it
     }
     it
   },
-  "block": (it, ..kinds) => {
-    show theofig-selector(..kinds): (it) => {
+  "block": (it, kinds) => {
+    show figure-where-kind-in(kinds): (it) => {
       show: block.with(stroke: 1pt, inset: 6pt, radius: 3pt)
       it
     }
     it
   },
-  "breakable": (it, ..kinds) => {
-    show theofig-selector(..kinds): (it) => {
+  "breakable": (it, kinds) => {
+    show figure-where-kind-in(kinds): (it) => {
       set block(breakable: true)
       it
     }
     it
   },
-  "not-breakable": (it, ..kinds) => {
-    show theofig-selector(..kinds): (it) => {
+  "not-breakable": (it, kinds) => {
+    show figure-where-kind-in(kinds): (it) => {
       set block(breakable: false)
       it
     }
@@ -324,7 +321,7 @@
     kinds = theofig-kinds.filter(x => x not in except)
   }
   for option in options.pos() {
-    it = (theofig-styles.at(option))(it, ..kinds)
+    it = (theofig-styles.at(option))(it, kinds)
   }
   it
 }

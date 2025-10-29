@@ -1,5 +1,6 @@
-#set page(width: 200mm, height: auto, margin: 8mm)
-This document at the moment consists \ of the examples that author wants to work.
+#set page(paper: "a4", margin: 8mm)
+#set text(10pt)
+#set par(justify: true)
 
 #page[
   #import "theofig.typ": *
@@ -80,7 +81,7 @@ This document at the moment consists \ of the examples that author wants to work
 
   #set math.equation(numbering: n => numbering("(1)", n))
 
-  #show theofig-selector(): show-figure-caption(strong)
+  #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
 
   #theorem[Just a theorem.]
   #theorem(numbering: none)[Just a theorem without number.]
@@ -100,15 +101,15 @@ This document at the moment consists \ of the examples that author wants to work
 
 
   #let postulate = theofig.with(supplement: "Postulate")
-  #show theofig-selector("postulate", ): show-figure-caption(emph)
+  #show figure.where(kind: "postulate"): show-figure-caption(emph)
   #postulate[Custom element with specified styling.]
 
   #let problem = theofig.with(supplement: "Problem")
 
   // do that in preambule in place of
-  // `#show theofig-selector(): show-figure-caption(strong)`
+  // `#show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)`
   #theofig-kinds.insert(-1, "problem")
-  #show theofig-selector(..theofig-kinds): show-figure-caption(strong) 
+  #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong) 
 
   #problem[Custom element with generic styling.]
 
@@ -149,7 +150,7 @@ This document at the moment consists \ of the examples that author wants to work
   #set heading(numbering: "1.")
   #set math.equation(numbering: n => numbering("(1)", n))
 
-  #show theofig-selector(): show-figure-caption(strong)
+  #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
 
   = Plain numbering (default)
 
@@ -167,7 +168,7 @@ This document at the moment consists \ of the examples that author wants to work
   #let thm-numbering(n) = numbering("1.1", counter(heading).get().first(), n)
   #let eq-numbering(n) = numbering("(1.1)", counter(heading).get().first(), n)
 
-  #show theofig-selector(): set figure(numbering: thm-numbering)
+  #show figure-where-kind-in(theofig-kinds): set figure(numbering: thm-numbering)
   #set math.equation(numbering: eq-numbering)
 
   #show heading: theofig-reset-counters
@@ -215,7 +216,7 @@ This document at the moment consists \ of the examples that author wants to work
   #set heading(numbering: "1.")
   #set math.equation(numbering: n => numbering("(1)", n))
 
-  #show theofig-selector(): show-figure-caption(strong)
+  #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
 
   = Plain numbering (default)
 
@@ -233,7 +234,7 @@ This document at the moment consists \ of the examples that author wants to work
   #let thm-numbering(n) = numbering("1.1", counter(heading).get().first(), n)
   #let eq-numbering(n) = numbering("(1.1)", counter(heading).get().first(), n)
 
-  #show theofig-selector(): set figure(numbering: thm-numbering)
+  #show figure-where-kind-in(theofig-kinds): set figure(numbering: thm-numbering)
   #set math.equation(numbering: eq-numbering)
 
   #show heading: theofig-reset-counters
@@ -268,6 +269,63 @@ This document at the moment consists \ of the examples that author wants to work
 
 ]
 
+#page[
+  #import "theofig.typ": *
+
+  = Example styles
+
+  // #show heading: align.with(center)
+
+  #table(columns: (1fr, 60mm),
+      [== Default style],
+    [
+      #definition[#lorem(10)] 
+      #theorem[#lorem(2)][#lorem(10)] 
+      #proof[#lorem(10)] 
+    ],
+    [
+      == Bold caption
+      ```typst
+
+      #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
+      ```
+      or
+      ```typst
+      #show figure-where-kind-in(theofig-kinds): it => {
+        show figure.caption: strong
+        it
+      }
+      ```
+    ],
+    [
+      // #show theofig-selector(..theofig-kinds): show-figure-caption(strong)
+
+      // #show figure: it => if it.kind in theofig-kinds {
+      //   show figure.caption: strong
+      //   show figure.caption: emph
+      //   show: emph
+      //   it.body
+      // } else {it}
+
+      #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
+
+      // #show figure.where(kind: "theorem"): it => {
+      //   show figure.caption: strong
+      //   show figure.caption: emph
+      //   show: emph
+      //   it.body
+      // }
+      //
+      //
+      // #show figure.where(kind: "theorem"): it => if it.kind == "theorem" {it} else {it}
+      #definition[#lorem(10)] 
+      #theorem[#lorem(2)][#lorem(10)] 
+      #proof[#lorem(10)] 
+    ]
+
+  )
+
+]
 
 
 #page[
@@ -280,37 +338,37 @@ This document at the moment consists \ of the examples that author wants to work
   #definition[Basic style.]
 
   #[
-    #show theofig-selector(): show-figure-caption(emph)
+    #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph)
     #definition[Italic title.]
   ]
 
   #[
-    #show theofig-selector(): show-figure-caption(emph)
-    #show theofig-selector(): set figure.caption(separator: [:])
+    #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph)
+    #show figure-where-kind-in(theofig-kinds): set figure.caption(separator: [:])
 
     #definition[Italic title and semicolon separator.]
   ]
 
   #[
-    #show theofig-selector(): show-figure-caption(strong)
+    #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
     #definition[Bold title.]
   ]
 
   #[
-    #show theofig-selector(): emph
-    #show theofig-selector(): show-figure-caption(emph, strong)
+    #show figure-where-kind-in(theofig-kinds): emph
+    #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph, strong)
     #definition[Bold title and intalic body.]
   ]
 
   #[
-    #show theofig-selector(): block.with(stroke: 1pt, radius: 3pt, inset: 6pt)
-    #show theofig-selector(): show-figure-caption(strong)
+    #show figure-where-kind-in(theofig-kinds): block.with(stroke: 1pt, radius: 3pt, inset: 6pt)
+    #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
     #definition[Bold title and boxed with border.]
   ]
 
   #[
-    #show theofig-selector(): block.with(fill: rgb(0,0,255,50), radius: 3pt, inset: 6pt)
-    #show theofig-selector(): show-figure-caption(strong)
+    #show figure-where-kind-in(theofig-kinds): block.with(fill: rgb(0,0,255,50), radius: 3pt, inset: 6pt)
+    #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
     #definition[Bold title and boxed with fill.]
   ]
 
@@ -322,12 +380,12 @@ This document at the moment consists \ of the examples that author wants to work
     which we make italic title and semicolon separator. Also, we disable numbering
     for remarks and examples.
 
-    #show theofig-selector(except: ("remark", "example")): show-figure-caption(strong)
+    #show figure-where-kind-in(theofig-kinds, except: ("remark", "example")): show-figure-caption(strong)
 
-    #show theofig-selector("remark", "example"): show-figure-caption(emph)
-    #show theofig-selector("remark", "example"): set figure.caption(separator: [:]) 
-    #show theofig-selector("remark", "example"): set figure(numbering: none)
-
+    #show figure-where-kind-in(("remark", "example")): show-figure-caption(emph)
+    #show figure-where-kind-in(("remark", "example")): set figure.caption(separator: [:]) 
+    #show figure-where-kind-in(("remark", "example")): set figure(numbering: none)
+u
     #theorem[Author][Statement of the theorem.]
     #proof[by me][Proof of the theorem.]
     #remark[We notice something.]
