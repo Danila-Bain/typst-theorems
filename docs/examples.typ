@@ -1,4 +1,4 @@
-#set page(paper: "a4", margin: 8mm)
+#set page(paper: "a4", height: auto, margin: 8mm)
 #set text(10pt)
 #set par(justify: true)
 
@@ -27,24 +27,6 @@
 ]
 
 #page[
-  #import "theofig.typ": *
-
-  = Styling 
-
-  #show figure: it => if it.kind in theofig-kinds {
-    show figure.caption: strong
-    it
-  } else {it}
-
-
-  #theorem[#lorem(50)]
-
-  #figure(caption: lorem(5))[
-    #lorem(50)
-  ]
-]
-
-#page[
 
   = Custom commands
 
@@ -59,9 +41,9 @@
 
   #theofig-kinds.insert(-1, "problem")
   #theofig-kinds.insert(-1, "solution")
-  #show: theofig-style-default(kinds: theofig-kinds)
 
-  #show: theofig-style("italic-title", kinds: ("hint",))
+  #show figure.where(kind: "hint"): show-figure-caption(emph)
+  #show figure.where(kind: "hint"): show-figure-caption(strong.with(delta: -300))
 
   #problem[What $1 + 1$ equals to in $ZZ_2$?]
 
@@ -274,54 +256,89 @@
 
   = Example styles
 
-  // #show heading: align.with(center)
+  #let A = [
+      #definition[#lorem(7)] 
+      #theorem[#lorem(2)][
+        #lorem(13)
+        #figure(caption: [An image])[
+          #image(bytes(range(256)), format: (encoding: "luma8", width: 16, height: 16))
+        ]
+        #lorem(5)
+      ] 
+      #proof[#lorem(8)] 
+  ]
 
-  #table(columns: (1fr, 60mm),
+  #table(columns: (1fr, 1fr),
       [== Default style],
     [
-      #definition[#lorem(10)] 
-      #theorem[#lorem(2)][#lorem(10)] 
-      #proof[#lorem(10)] 
+      #A
     ],
     [
-      == Bold caption
+      == Not bold caption
       ```typst
-
-      #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
+      #show figure-where-kind-in(
+        theofig-kinds
+      ): show-figure-caption(strong.with(delta: -300))
       ```
-      or
+    ],
+    [
+      #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong.with(delta: -300))
+      #A
+    ],
+    [
+      == Italic body
       ```typst
       #show figure-where-kind-in(theofig-kinds): it => {
-        show figure.caption: strong
+        show: emph                // apply emph
+        show figure.caption: emph // remove emph from caption
         it
       }
       ```
     ],
     [
-      // #show theofig-selector(..theofig-kinds): show-figure-caption(strong)
+      #show figure-where-kind-in(theofig-kinds): it => {
+        show: emph
+        show figure.caption: emph
+        it
+      }
+      #A
+    ],
+    [
+      == Block
+      ```typst
+      #show figure-where-kind-in(theofig-kinds): block.with(
+        inset: 5pt, stroke: 1pt, fill: aqua, radius: 5pt,
+      )
+      ```
+    ],
+    [
+      #show figure-where-kind-in( theofig-kinds): block.with(
+        inset: 5pt, stroke: 1pt, fill: aqua, radius: 5pt,
+      )
+      #A
+    ],
+    [
+      == Custom numbering
+      ```typst
+      #show figure-where-kind-in(
+        theofig-kinds
+      ): set figure(numbering: "I")
+      ```
 
-      // #show figure: it => if it.kind in theofig-kinds {
-      //   show figure.caption: strong
-      //   show figure.caption: emph
-      //   show: emph
-      //   it.body
-      // } else {it}
+      Note that nested figures will be affected by that, and you either
+      have to explicitly reset correct numbering for nested figures, or 
+      set numbering for each individual function using redefinitions like
+      ```typst
+      #let theorem = theorem.with(numbering: "I")
+      #let definition = theorem.with(numbering: "I")
+      // etc
+      ```
 
-      #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
-
-      // #show figure.where(kind: "theorem"): it => {
-      //   show figure.caption: strong
-      //   show figure.caption: emph
-      //   show: emph
-      //   it.body
-      // }
-      //
-      //
-      // #show figure.where(kind: "theorem"): it => if it.kind == "theorem" {it} else {it}
-      #definition[#lorem(10)] 
-      #theorem[#lorem(2)][#lorem(10)] 
-      #proof[#lorem(10)] 
-    ]
+    ],
+    [
+      #show figure-where-kind-in(theofig-kinds): set figure(numbering: "I")
+      #A
+    ],
 
   )
 
@@ -329,48 +346,7 @@
 
 
 #page[
-
   #import "theofig.typ": *
-  #set text(10pt)
-
-  = Styling
-
-  #definition[Basic style.]
-
-  #[
-    #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph)
-    #definition[Italic title.]
-  ]
-
-  #[
-    #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph)
-    #show figure-where-kind-in(theofig-kinds): set figure.caption(separator: [:])
-
-    #definition[Italic title and semicolon separator.]
-  ]
-
-  #[
-    #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
-    #definition[Bold title.]
-  ]
-
-  #[
-    #show figure-where-kind-in(theofig-kinds): emph
-    #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph, strong)
-    #definition[Bold title and intalic body.]
-  ]
-
-  #[
-    #show figure-where-kind-in(theofig-kinds): block.with(stroke: 1pt, radius: 3pt, inset: 6pt)
-    #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
-    #definition[Bold title and boxed with border.]
-  ]
-
-  #[
-    #show figure-where-kind-in(theofig-kinds): block.with(fill: rgb(0,0,255,50), radius: 3pt, inset: 6pt)
-    #show figure-where-kind-in(theofig-kinds): show-figure-caption(strong)
-    #definition[Bold title and boxed with fill.]
-  ]
 
   = Choosing what to style
 
@@ -385,7 +361,9 @@
     #show figure-where-kind-in(("remark", "example")): show-figure-caption(emph)
     #show figure-where-kind-in(("remark", "example")): set figure.caption(separator: [:]) 
     #show figure-where-kind-in(("remark", "example")): set figure(numbering: none)
-u
+
+
+
     #theorem[Author][Statement of the theorem.]
     #proof[by me][Proof of the theorem.]
     #remark[We notice something.]
