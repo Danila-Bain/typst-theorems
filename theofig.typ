@@ -160,7 +160,8 @@
   ),
 )
 
-/// Docstring
+
+
 #let theofig(
   ..args,
   kind: none, 
@@ -178,13 +179,29 @@
   let caption = args.pos().at(0, default: none)
   // assert(args.pos().len() <= 1)
   if (numbering != auto) {
-    // if (number != auto) {
-    //   figure-options.insert("numbering", none)
-    // } else {
+    if (number != auto) {
+      // counter(figure.where(kind: kind)).update(n => n - 1)
+      if type(number) == label {
+        figure-options.insert(
+          "numbering", 
+          (..) => std.numbering(numbering, counter(figure.where(kind: kind)).at(number).first())
+        )
+      } else if type(number) == int {
+        figure-options.insert(
+          "numbering", 
+          (..) => std.numbering(numbering, number),
+        )
+      } else {
+        figure-options.insert(
+          "numbering",
+          (..) => number,
+        )
+      }
+    } else {
       figure-options.insert("numbering", numbering)
-    // }
+    }
   }
-  // set figure(supplement: supplement) if supplement != none
+  // // set figure(supplement: supplement) if supplement != none
   if (kind == none and supplement != auto) {
     kind = lower(supplement)
   }
@@ -203,11 +220,6 @@
       width: 100%,
       breakable: true,
       ..block-options,
-      // stroke: 1pt,
-      // radius: 2pt,
-      // inset: 5pt,
-      // if title-style != none { title = (title-style)(title) }
-      // if body-style != none { body = (body-style)(body) }
       context {
         let supplement = if (supplement == auto) {
           theofig-translations.at(text.lang).at(kind, default: kind)
