@@ -163,21 +163,33 @@
 
 
 #let theofig(
-  ..args,
+  ..caption,
   kind: none, 
   supplement: auto, 
   number: auto,
   numbering: auto, 
-  block-options: none,
-  figure-options: none,
+  block-options: (:),
+  figure-options: (:),
   separator: ".",
   translated-supplement: true,
   qed: false,
   body
 ) = {
-  if (figure-options == none) {figure-options = (:) }
-  let caption = args.pos().at(0, default: none)
-  // assert(args.pos().len() <= 1)
+  
+  let caption = caption.pos().at(0, default: none)
+  
+  if (kind == none and supplement != auto) { kind = lower(supplement) }
+
+  let supplement = context { 
+    if (supplement == auto) {
+      theofig-translations.at(text.lang).at(kind, default: kind)
+    } else if translated-supplement {
+      theofig-translations.at(text.lang).at(lower(supplement), default: supplement)
+    } else {
+      supplement
+    }
+  } 
+
   if (numbering != auto) {
     if (number != auto) {
       // counter(figure.where(kind: kind)).update(n => n - 1)
@@ -201,33 +213,17 @@
       figure-options.insert("numbering", numbering)
     }
   }
-  // // set figure(supplement: supplement) if supplement != none
-  if (kind == none and supplement != auto) {
-    kind = lower(supplement)
-  }
+
+
   figure(
     placement: none, kind: kind, ..figure-options,
-    supplement: context { 
-      if (supplement == auto) {
-        theofig-translations.at(text.lang).at(kind)
-      } else if translated-supplement {
-        theofig-translations.at(text.lang).at(lower(supplement), default: supplement)
-      } else {
-        supplement
-      }
-    }, 
+    supplement: supplement, 
     block(
       width: 100%,
       breakable: true,
       ..block-options,
       context {
-        let supplement = if (supplement == auto) {
-          theofig-translations.at(text.lang).at(kind, default: kind)
-        } else if translated-supplement {
-          theofig-translations.at(text.lang).at(lower(supplement), default: supplement)
-        } else {
-          supplement
-        }
+        let supplement = supplement
 
         let separator = if (figure.caption.separator == auto) {
           separator
@@ -243,13 +239,16 @@
           } else {
             number
           }
-          supplement = [#supplement #count]
+          supplement += [ #count]
         }
-        if caption != none { supplement = [#supplement (#caption)] }
-        supplement = [#supplement#separator]
-        let first-line-indent = par.first-line-indent
-        first-line-indent.insert("all", false)
-        set par(first-line-indent: first-line-indent)
+
+        if caption != none { 
+          supplement += [ (#caption)] 
+        }
+        supplement += separator
+
+        set par(first-line-indent: par.first-line-indent + (all: false))
+
         align(
           left, 
           [
