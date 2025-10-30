@@ -167,7 +167,7 @@
   kind: none, 
   supplement: auto, 
   number: auto,
-  numbering: auto, 
+  numbering: "1", 
   block-options: (:),
   figure-options: (:),
   separator: ".",
@@ -190,60 +190,57 @@
     }
   } 
 
-  if (numbering != auto) {
-    if (number != auto) {
-      // counter(figure.where(kind: kind)).update(n => n - 1)
+  if (number != auto) {
       if type(number) == label {
-        figure-options.insert(
-          "numbering", 
-          (..) => std.numbering(numbering, counter(figure.where(kind: kind)).at(number).first())
-        )
+          numbering = (..) => {
+            std.numbering(numbering, 
+                          counter(figure.where(kind: kind)).at(number).first())
+          }
       } else if type(number) == int {
-        figure-options.insert(
-          "numbering", 
-          (..) => std.numbering(numbering, number),
-        )
+          numbering = (..) => std.numbering(numbering, number)
       } else {
-        figure-options.insert(
-          "numbering",
-          (..) => number,
-        )
+          numbering = (..) => number
       }
-    } else {
-      figure-options.insert("numbering", numbering)
-    }
   }
 
-
   figure(
-    placement: none, kind: kind, ..figure-options,
+    placement: none, 
+    kind: kind, 
+    numbering: numbering, 
     supplement: supplement, 
+    ..figure-options,
     block(
       width: 100%,
       breakable: true,
       ..block-options,
       context {
-        let supplement = supplement
+        let supplement = supplement // context object
 
-        let separator = if (figure.caption.separator == auto) {
-          separator
-        } else {
-          figure.caption.separator
-        }
 
-        if numbering != none and figure.numbering != none {
-          let count = if number == auto {
-            counter(figure.where(kind: kind)).display(numbering)
-          } else if type(number) == label {
-            std.numbering(numbering, ..counter(figure.where(kind: kind)).at(number))
-          } else {
-            number
-          }
-          supplement += [ #count]
+        // if number != auto {
+        //
+        // } else {
+        if numbering != none {
+          supplement += [ #counter(figure.where(kind: kind)).display(numbering)]
         }
+        // }
+        // // if numbering != none and figure.numbering != none {
+        // //   let count = if number == auto {
+        //     counter(figure.where(kind: kind)).display(numbering)
+        //   } else if type(number) == label {
+        //     std.numbering(numbering, ..counter(figure.where(kind: kind)).at(number))
+        //   } else {
+        //     number
+        //   }
+        //   supplement += [ #count]
+        // }
 
         if caption != none { 
           supplement += [ (#caption)] 
+        }
+
+        if (figure.caption.separator != auto) {
+          separator = figure.caption.separator
         }
         supplement += separator
 
