@@ -160,11 +160,12 @@
   ),
 )
 
-
+/// Docstring
 #let theofig(
   ..args,
   kind: none, 
   supplement: auto, 
+  number: auto,
   numbering: auto, 
   block-options: none,
   figure-options: none,
@@ -173,10 +174,15 @@
   qed: false,
   body
 ) = {
+  if (figure-options == none) {figure-options = (:) }
   let caption = args.pos().at(0, default: none)
+  // assert(args.pos().len() <= 1)
   if (numbering != auto) {
-    if (figure-options == none) {figure-options = (:) }
-    figure-options.insert("numbering", numbering)
+    // if (number != auto) {
+    //   figure-options.insert("numbering", none)
+    // } else {
+      figure-options.insert("numbering", numbering)
+    // }
   }
   // set figure(supplement: supplement) if supplement != none
   if (kind == none and supplement != auto) {
@@ -202,7 +208,6 @@
       // inset: 5pt,
       // if title-style != none { title = (title-style)(title) }
       // if body-style != none { body = (body-style)(body) }
-
       context {
         let supplement = if (supplement == auto) {
           theofig-translations.at(text.lang).at(kind, default: kind)
@@ -219,7 +224,14 @@
         }
 
         if numbering != none and figure.numbering != none {
-          supplement = [#supplement #counter(figure.where(kind: kind)).display(numbering)]
+          let count = if number == auto {
+            counter(figure.where(kind: kind)).display(numbering)
+          } else if type(number) == label {
+            std.numbering(numbering, ..counter(figure.where(kind: kind)).at(number))
+          } else {
+            number
+          }
+          supplement = [#supplement #count]
         }
         if caption != none { supplement = [#supplement (#caption)] }
         supplement = [#supplement#separator]
@@ -241,15 +253,17 @@
 
 
 // #let theorem-figure-defaults = none
-#let theorem = theofig.with(kind: "theorem", supplement: "Theorem")
-#let lemma = theofig.with(kind: "lemma", supplement: "Lemma")
-#let statement = theofig.with(kind: "statement", supplement: "Statement")
-#let remark = theofig.with(kind: "remark", supplement: "Remark")
-#let corollary = theofig.with(kind: "corollary", supplement: "Corollary", numbering: none)
-#let example = theofig.with(kind: "example", supplement: "Example")
-#let definition = theofig.with(kind: "definition", supplement: "Definition")
-#let algorithm = theofig.with(kind: "algorithm", supplement: "Algorithm")
-#let proof = theofig.with(kind: "proof", numbering: none, qed: true)
+#let theorem    = theofig.with(kind: "theorem",     supplement: "Theorem")
+#let lemma      = theofig.with(kind: "lemma",       supplement: "Lemma")
+#let statement  = theofig.with(kind: "statement",   supplement: "Statement")
+#let remark     = theofig.with(kind: "remark",      supplement: "Remark")
+#let corollary  = theofig.with(kind: "corollary",   supplement: "Corollary", numbering: none)
+#let example    = theofig.with(kind: "example",     supplement: "Example")
+#let definition = theofig.with(kind: "definition",  supplement: "Definition")
+#let algorithm  = theofig.with(kind: "algorithm",   supplement: "Algorithm")
+#let problem    = theofig.with(kind: "problem",     supplement: "Problem")
+#let solution   = theofig.with(kind: "solution",    supplement: "Solution", numbering: none)
+#let proof      = theofig.with(kind: "proof", numbering: none, qed: true)
 
 
 #let figure-where-kind-in(kinds, except: ()) = {
