@@ -214,26 +214,16 @@
       breakable: true,
       ..block-options,
       context {
+
         let supplement = supplement // context object
+        
+        if number != auto {
+          counter(figure.where(kind: kind)).update(n => n - 1)
+        }
 
-
-        // if number != auto {
-        //
-        // } else {
         if numbering != none {
           supplement += [ #counter(figure.where(kind: kind)).display(numbering)]
         }
-        // }
-        // // if numbering != none and figure.numbering != none {
-        // //   let count = if number == auto {
-        //     counter(figure.where(kind: kind)).display(numbering)
-        //   } else if type(number) == label {
-        //     std.numbering(numbering, ..counter(figure.where(kind: kind)).at(number))
-        //   } else {
-        //     number
-        //   }
-        //   supplement += [ #count]
-        // }
 
         if caption != none { 
           supplement += [ (#caption)] 
