@@ -197,7 +197,32 @@ If supplement is specified, the `kind` of figure is chosen automatically as `low
 so in this example adding `"joke"` to `theofig-kinds` lets us apply styling 
 to a `joke` environment together with all standard environments.
 
-== Ways to specify numbering
+== Languages support
+
+Enabled by default argument `translate-supplement: true`, 
+`theofig` environments map supplement based on context-dependant `text.lang`.
+List of supported languages: 
+#for key in theofig-translations.keys().slice(0, -1) [#key, ]
+#theofig-translations.keys().last(). Note that unlike supplement of a figure,
+a supplement in reference changes if `text.lang` is not the same as it was
+at the location of the figure.
+
+#code-example-row(```typ
+#set text(lang: "ru")
+#theorem[#lorem(5)]
+
+#set text(lang: "es")
+#theorem[#lorem(5)]
+
+#set text(lang: "de")
+#theorem[#lorem(5)]
+
+#set text(lang: "ja")
+#theorem[#lorem(5)]
+```)
+
+
+== Ways to specify numbering style
 
 Most default environments use `figure`'s default numbering, which is `"1"` 
 (see @def-a-1). Hence, we can change default numbering for many environments
@@ -254,6 +279,46 @@ or equivalent statements of theorems (see @def-1 and @def-2).
 #definition[Back to default.]
 ```)
 
+== Shared numbering
+
+If you want different environments to share numbering,
+you just need to have them have the same kind, but different
+supplement:
+#code-example-row(```typ
+#let lemma     = lemma.with(kind: "theorem")
+#let statement = statement.with(kind: "theorem")
+
+#theorem[#lorem(5)]
+#lemma[#lorem(5)]
+#statement[#lorem(5)]
+#theorem[#lorem(5)]
+```)
+
+One obvious limitation of that approach is that not only numbering
+will be shared. All styling of `theorem` that is based on `show` rules
+will also apply to `lemma` and `statement`. To mitigate that,
+styling can be applied individually through setting arguments
+`format-caption`, `format-body`, `block-options`, and `figure-options`.
+#code-example-row(```typ
+#let theorem = theorem.with(
+  format-body: emph,
+)
+#let lemma     = lemma.with(
+  kind: "theorem",
+  format-caption: none,
+)
+#let statement = statement.with(
+  kind: "theorem",
+  block-options: (
+    stroke: 1pt, radius: 3pt, inset: 5pt,
+  ),
+)
+
+#theorem[#lorem(5)]
+#lemma[#lorem(5)]
+#lemma[#lorem(5)]
+```)
+
 == Show rules to specify a style
 
 All environments are `figure`'s under the hood, and they can be styled
@@ -281,7 +346,7 @@ can be style using `show figure.caption: ...` rules.
 #proof[#lorem(10)]
 #problem[#lorem(10)]
 #solution[#lorem(10)]
-```),
+```)
 
 
 
@@ -330,30 +395,6 @@ can be style using `show figure.caption: ...` rules.
   stroke: (left: 1pt), inset: (right: 0pt, rest: 5pt)
 )
 #solution[Line to the left. #lorem(16)]
-```)
-
-== Languages support
-
-Enabled by default argument `translate-supplement: true`, 
-`theofig` environments map supplement based on context-dependant `text.lang`.
-List of supported languages: 
-#for key in theofig-translations.keys().slice(0, -1) [#key, ]
-#theofig-translations.keys().last(). Note that unlike supplement of a figure,
-a supplement in reference changes if `text.lang` is not the same as it was
-at the location of the figure.
-
-#code-example-row(```typ
-#set text(lang: "ru")
-#theorem[#lorem(5)]
-
-#set text(lang: "es")
-#theorem[#lorem(5)]
-
-#set text(lang: "de")
-#theorem[#lorem(5)]
-
-#set text(lang: "ja")
-#theorem[#lorem(5)]
 ```)
 
 == Limitations
