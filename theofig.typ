@@ -272,19 +272,20 @@
 
 
 // #let theorem-figure-defaults = none
-#let definition = theofig.with(kind: "definition",  supplement: "Definition")
-#let theorem    = theofig.with(kind: "theorem",     supplement: "Theorem")
-#let proof      = theofig.with(kind: "proof", numbering: none, qed: true)
+#let definition  = theofig.with(kind: "definition",  supplement: "Definition")
+#let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem")
+#let proof       = theofig.with(kind: "proof", numbering: none, qed: true)
 
-#let lemma      = theofig.with(kind: "lemma",       supplement: "Lemma")
-#let statement  = theofig.with(kind: "statement",   supplement: "Statement")
-#let remark     = theofig.with(kind: "remark",      supplement: "Remark")
-#let corollary  = theofig.with(kind: "corollary",   supplement: "Corollary", numbering: none)
+#let lemma       = theofig.with(kind: "lemma",       supplement: "Lemma")
+#let statement   = theofig.with(kind: "statement",   supplement: "Statement")
+#let remark      = theofig.with(kind: "remark",      supplement: "Remark")
+#let corollary   = theofig.with(kind: "corollary",   supplement: "Corollary", numbering: none)
+#let proposition = theofig.with(kind: "proposition", supplement: "Proposition")
 
-#let example    = theofig.with(kind: "example",     supplement: "Example")
-#let algorithm  = theofig.with(kind: "algorithm",   supplement: "Algorithm")
-#let problem    = theofig.with(kind: "problem",     supplement: "Problem")
-#let solution   = theofig.with(kind: "solution",    supplement: "Solution", numbering: none)
+#let example     = theofig.with(kind: "example",     supplement: "Example")
+#let algorithm   = theofig.with(kind: "algorithm",   supplement: "Algorithm")
+#let problem     = theofig.with(kind: "problem",     supplement: "Problem")
+#let solution    = theofig.with(kind: "solution",    supplement: "Solution", numbering: none)
 
 
 #let figure-where-kind-in(kinds, except: ()) = {
