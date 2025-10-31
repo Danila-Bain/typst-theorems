@@ -8,6 +8,8 @@
   "corollary",
   "algorithm",
   "definition",
+  "problem",
+  "solution",
 )
 
 /// Per-language list of default suppliments 
@@ -167,7 +169,7 @@
   kind: none, 
   supplement: auto, 
   number: auto,
-  numbering: "1", 
+  numbering: auto, 
   block-options: (:),
   figure-options: (:),
   separator: ".",
@@ -192,21 +194,35 @@
 
   if (number != auto) {
       if type(number) == label {
+        if numbering == auto {
+          numbering = (..) => context {
+            std.numbering(figure.numbering, 
+                          counter(figure.where(kind: kind)).at(number).first())
+          }
+        } else {
           numbering = (..) => {
             std.numbering(numbering, 
                           counter(figure.where(kind: kind)).at(number).first())
           }
+        }
       } else if type(number) == int {
+        if numbering == auto {
+          numbering = (..) => context std.numbering(figure.numbering, number)
+        } else {
           numbering = (..) => std.numbering(numbering, number)
+        }
       } else {
           numbering = (..) => number
       }
   }
 
+  if numbering != auto {
+    figure-options += (numbering: numbering)
+  }
+
   figure(
     placement: none, 
     kind: kind, 
-    numbering: numbering, 
     supplement: supplement, 
     ..figure-options,
     block(
@@ -215,10 +231,15 @@
       ..block-options,
       context {
 
-        let supplement = supplement // context object
+        let supplement = supplement
+        let numbering = numbering 
         
         if number != auto {
           counter(figure.where(kind: kind)).update(n => n - 1)
+        }
+
+        if numbering == auto {
+          numbering = figure.numbering
         }
 
         if numbering != none {
@@ -234,6 +255,7 @@
         }
         supplement += separator
 
+
         set par(first-line-indent: par.first-line-indent + (all: false))
 
         align(
@@ -243,7 +265,6 @@
           ]
         )
       }
-
     )
   )
 }
@@ -251,17 +272,19 @@
 
 
 // #let theorem-figure-defaults = none
+#let definition = theofig.with(kind: "definition",  supplement: "Definition")
 #let theorem    = theofig.with(kind: "theorem",     supplement: "Theorem")
+#let proof      = theofig.with(kind: "proof", numbering: none, qed: true)
+
 #let lemma      = theofig.with(kind: "lemma",       supplement: "Lemma")
 #let statement  = theofig.with(kind: "statement",   supplement: "Statement")
 #let remark     = theofig.with(kind: "remark",      supplement: "Remark")
 #let corollary  = theofig.with(kind: "corollary",   supplement: "Corollary", numbering: none)
+
 #let example    = theofig.with(kind: "example",     supplement: "Example")
-#let definition = theofig.with(kind: "definition",  supplement: "Definition")
 #let algorithm  = theofig.with(kind: "algorithm",   supplement: "Algorithm")
 #let problem    = theofig.with(kind: "problem",     supplement: "Problem")
 #let solution   = theofig.with(kind: "solution",    supplement: "Solution", numbering: none)
-#let proof      = theofig.with(kind: "proof", numbering: none, qed: true)
 
 
 #let figure-where-kind-in(kinds, except: ()) = {
@@ -345,11 +368,10 @@
 #let theofig-style-block-italic = theofig-style.with("bold-title", "italic-body", "block")
 
 
-#let theofig-reset-counters(it, kinds: theofig-kinds, except: ()) = {
+#let theofig-reset-counters(kinds, except: ()) = {
   for kind in kinds {
     if kind not in except {
       counter(figure.where(kind: kind)).update(0)
     }
   }
-  it
 }
