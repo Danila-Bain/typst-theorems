@@ -172,8 +172,10 @@
   numbering: auto, 
   block-options: (:),
   figure-options: (:),
+  format-caption: strong,
+  format-body: none,
   separator: ".",
-  translated-supplement: true,
+  translate-supplement: true,
   qed: false,
   body
 ) = {
@@ -185,7 +187,7 @@
   let supplement = context { 
     if (supplement == auto) {
       theofig-translations.at(text.lang).at(kind, default: kind)
-    } else if translated-supplement {
+    } else if translate-supplement {
       theofig-translations.at(text.lang).at(lower(supplement), default: supplement)
     } else {
       supplement
@@ -255,13 +257,19 @@
         }
         supplement += separator
 
+        if format-caption != none {
+            supplement = format-caption(supplement)
+        }
+        if format-body != none {
+            body = format-body(body)
+        }
 
         set par(first-line-indent: par.first-line-indent + (all: false))
 
         align(
           left, 
           [
-            #box(strong(figure.caption(supplement))) #body #if (qed) { h(1fr); math.qed }
+            #box(figure.caption(supplement)) #body #if (qed) { h(1fr); math.qed }
           ]
         )
       }
