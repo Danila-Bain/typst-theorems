@@ -59,8 +59,7 @@
     customization \ of theorem environments built on top of
     #link("https://typst.app/docs/reference/model/figure/")[`std.figure`].
 
-
-	#link("https://github.com/Jollywatt/typst-fletcher")[`github.com/Jollywatt/typst-fletcher`]
+	#link("https://github.com/Danila-Bain/typst-theorems")[`github.com/Danila-Bain/typst-theorems`]
 
 	*Version #VERSION*
 ]
@@ -117,6 +116,7 @@ Importing everything with `*` is recommended:
 		set text(.85em)
 		let code = src.text.replace(regex("(^|\n).*// hide\n|^[\s|\S]*// setup\n"), "")
 		box(raw(block: true, lang: src.lang, code)) // box to prevent pagebreaks
+        context {theofig-reset-counters(theofig-kinds)}
 	},
 	eval(
 		src.text,
@@ -138,17 +138,19 @@ Importing everything with `*` is recommended:
 	inset: (x: 0pt, y: 7pt),
 
 	..code-example(```typ
+      == Basic usage
       #theorem[
         #lorem(5)
       ] <theorem-1>
 
-      #theorem[Author B. C.][#lorem(10)]
+      #theorem[Lorem][#lorem(10)]
 
       #proof[It follows directly from @theorem-1.]
       ```),
 
 	
     ..code-example(```typ
+      == Default environments
       #theorem[#lorem(5)]
 
       #lemma[#lorem(5)]
@@ -173,26 +175,84 @@ Importing everything with `*` is recommended:
       ```),
 
     ..code-example(```typ
+      == Custom numbering
 
-
-      #definition[
-        Equivalent to @definition-2.
-      ]<definition-1>
-
-      #definition(
-        number: <definition-1>,
-        numbering: numbering.with("1'")
-      )[
-        Equivalent to @definition-1
-      ]<definition-2>
+      #definition[Default.]
       
-      #definition(number: $cal(A)$)[
-        #lorem(5)
-      ]<definition-3>
-      
-      #definition[#lorem(5)]
+      #definition(numbering: none)[No numbering.]
 
-      #definition(numbering: none)[#lorem(5)]
+      #definition[Equivalent to @def-2.]<def-1>
+
+      #definition(number: <def-1>, numbering: "1'")[ 
+        Equivalent to @def-1. 
+      ]<def-2>
+
+      #definition(number: 100)[ 
+        This is @def-100. 
+      ]<def-100>
+
+      #definition(number: 5, numbering: "A")[
+        This is @def-3.
+      ]<def-3>
+
+      #definition(number: $e^pi$)[
+        This is @def-exp
+      ]<def-exp>
+
+      #definition[Back to default.]
+      ```),
+
+
+
+    ..code-example(```typ
+      == Ways to specify numbering
+
+      #definition[Default @def-a-1.]<def-a-1>
+
+      #show figure-where-kind-in(
+        theofig-kinds
+      ): set figure(numbering: "I")
+      #definition[Show rule @def-a-2.]<def-a-2>
+
+      #let definition = definition.with(numbering: "A")
+      #definition[Redefined @def-a-3.]<def-a-3>
+
+      #definition(numbering: numbering.with("(i)"))[
+        Argument @def-a-4.
+      ]<def-a-4>
+      ```),
+
+    ..code-example(```typ
+      == Different styles
+      
+      #theorem[Default]
+
+      #show figure.where(kind: "definition"): it => {
+        show figure.caption: emph
+        show figure.caption: strong.with(delta: -300)
+        it
+      }
+      #definition[Italic caption.]
+      
+      // #show figure.where(kind: "theorem"): emph 
+      // #show figure.where(kind: "theorem"): show-figure-caption(emph) // undo emph for caption
+      // #theorem[Italic body.]
+
+      // #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph)
+      //
+      // #definition[#lorem(5)]
+      //
+      // #solution[]
+      ```),
+
+    ..code-example(```typ
+      == Ways to specify a style
+      #solution[]
+      ```),
+
+    ..code-example(```typ
+      == Languages support
+      #solution[]
       ```),
 
 
