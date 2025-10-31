@@ -235,6 +235,7 @@
 
         let supplement = supplement
         let numbering = numbering 
+        let body = body
         
         if number != auto {
           counter(figure.where(kind: kind)).update(n => n - 1)
