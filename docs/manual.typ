@@ -132,7 +132,7 @@ Importing everything with `*` is recommended:
 )
 
 #table(
-	columns: (2fr, 2fr),
+	columns: (2.5fr, 2fr),
 	align: (horizon, center + horizon),
 	stroke: (x: none),
 	inset: (x: 0pt, y: 7pt),
@@ -225,29 +225,73 @@ Importing everything with `*` is recommended:
     ..code-example(```typ
       == Different styles
       
-      #theorem[Default]
+      #theorem[Default. #lorem(16)]
 
       #show figure.where(kind: "definition"): it => {
         show figure.caption: emph
         show figure.caption: strong.with(delta: -300)
         it
       }
-      #definition[Italic caption.]
-      
-      // #show figure.where(kind: "theorem"): emph 
-      // #show figure.where(kind: "theorem"): show-figure-caption(emph) // undo emph for caption
-      // #theorem[Italic body.]
+      #definition[Italic caption. #lorem(16)]
 
-      // #show figure-where-kind-in(theofig-kinds): show-figure-caption(emph)
-      //
-      // #definition[#lorem(5)]
-      //
-      // #solution[]
+      #show figure.where(kind: "lemma"): it => {
+        show figure.caption: underline.with(offset: 1.5pt)
+        show figure.caption: strong.with(delta: -300)
+        it
+      }
+      #lemma[Underline caption. #lorem(16)]
+      
+      #show figure.where(kind: "proposition"): it => {
+        show: emph
+        show figure.caption: emph
+        show figure.caption: smallcaps
+        show figure.caption: strong.with(delta: -300)
+        it
+      }
+      #proposition[Italic body, smallcaps caption. #lorem(12)]
+      
+      
+      #show figure.where(kind: "corollary"): it => {
+        show figure.caption: strong.with(delta: -300)
+        show figure.caption: set text(tracking: 3pt)
+        it
+      }
+      #corollary[Sparse caption. #lorem(16)]
+      
+      #show figure.where(kind: "statement"): block.with(
+        stroke: 1pt, radius: 3pt, inset: 5pt,
+      )
+      #statement[Block. #lorem(16)]
+      
+      #show figure.where(kind: "solution"): block.with(
+        stroke: (left: 1pt), inset: (right: 0pt, rest: 5pt)
+      )
+      #solution[Line to the left. #lorem(16)]
       ```),
 
     ..code-example(```typ
-      == Ways to specify a style
-      #solution[]
+      == Show rules to specify a style
+
+      // apply to one
+      #show figure.where(kind: "theorem"): smallcaps
+      // apply to some
+      #show figure-where-kind-in(
+        ("solution", "problem")
+      ): emph
+      // apply to all
+      #show figure-where-kind-in(theofig-kinds): set figure(
+        numbering: "I",
+      )
+      // apply to all except some
+      #show figure-where-kind-in(
+        theofig-kinds, except: ("proof",),
+      ): set text(blue)
+
+      #definition[#lorem(10)]
+      #theorem[#lorem(10)]
+      #proof[#lorem(10)]
+      #problem[#lorem(10)]
+      #solution[#lorem(10)]
       ```),
 
     ..code-example(```typ
