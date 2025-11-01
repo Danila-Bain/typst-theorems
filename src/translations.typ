@@ -1,3 +1,19 @@
+/// List of translated supplements. Which is used by `theofig()` to localize
+/// default supplements depending on contextual `text.lang` 
+/// if #the-param[theofig][translate-supplement] is true.
+///
+/// #code-example-row(```typst
+///
+/// List of supported languages: 
+/// #theofig-translations.keys().join(", ").
+///
+/// For example German translations are
+///
+/// #theofig-translations.at("de")
+///
+/// ```)
+///
+/// -> dictionary of dictionaries
 #let theofig-translations = (
   "cs": (
     "algorithm":      "Algoritmus",

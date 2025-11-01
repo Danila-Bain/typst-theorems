@@ -22,6 +22,30 @@
 
 #let scope = dictionary(theofig-module)
 
+// link to a specific parameter of a function
+#let param(func, arg, full: false) = {
+	let func = func.text
+	let arg = arg.text
+	let l1 = doc-style.fn-param-label(func, arg)
+	let l2 = doc-style.fn-label(func)
+	if full {
+		[the #link(l1, raw(arg)) option of #link(l2, raw(func + "()"))]
+	} else {
+		link(l1, raw(arg))
+	}
+}
+#let the-param = param.with(full: true)
+#let variable(var, prefix: "") = {
+  let var = var.text
+  link(label(prefix + "-" + var), raw(var))
+}
+#let fn(func, prefix: "") = {
+  let func = func.text
+  link(doc-style.fn-label(func), raw(func + "()"))
+}
+
+
+#set raw(lang: "typc")
 
 #v(.2fr)
 
@@ -49,23 +73,9 @@
 	*Version #VERSION*
 ]
 
-#set raw(lang: "typc")
-#show raw.where(block: false): it => {
-	// if raw block is a function call, like `foo()`, make it a link
-	if it.text.match(regex("^[a-z-]+\(\)$")) == none { it }
-	else {
-		let l = label(it.text)
-		context {
-			if query(l).len() > 0 {
-				link(l, it)
-			} else {
-				it
-			}
-		}
-	}
-}
 
 #show raw.where(block: true): set text(8pt)
+
 
 #v(1fr)
 
@@ -74,19 +84,23 @@
 		title: align(center, box(width: 100%)[Guide]),
 		indent: 1em,
 		target: selector(heading).before(<func-ref>, inclusive: false),
-	)
+	)<outline>
 	#colbreak()
 	#outline(
 		title: align(center, box(width: 100%)[Reference]),
 		indent: 1em,
 		target: selector(heading.where(level: 1)).or(heading.where(level: 2)).after(<func-ref>, inclusive: true),
 	)
-
 ]
+
+#show heading.where(level: 1).or(heading.where(level: 2)): it => link(<outline>, it)
 
 #v(1fr)
 
 #pagebreak()
+
+
+
 
 = Usage examples
 
@@ -159,8 +173,8 @@ Importing everything with `*` is recommended:
 
 == Custom environments
 
-All default environments of `theofig` are defined as `with`-specializations of 
-a function `theofig.theofig`, which can be used to create custom environments. 
+All default environments of `theofig` package are defined as `.with()`-specializations of 
+a function #fn[theofig], which can also be used to create custom environments. 
 
 #code-example-row(```typ
 #let joke = theofig.with(supplement: "Joke")
@@ -177,18 +191,17 @@ a function `theofig.theofig`, which can be used to create custom environments.
 #statement[A topologist is someone who can’t tell the difference between a coffee mug and a doughnut.]
 
 ```)
-If supplement is specified, the `kind` of figure is chosen automatically as `lower(supplement)`,
-so in this example adding `"joke"` to `theofig-kinds` lets us apply styling 
+If #the-param[theofig][supplement] is specified, the #param[theofig][kind] is chosen automatically as `lower(supplement)`,
+so in this example adding `"joke"` to #variable[theofig-kinds] lets us apply styling 
 to a `joke` environment together with all standard environments.
 
 == Languages support
 
-Enabled by default argument `translate-supplement: true`, 
-`theofig` environments map supplement based on context-dependant `text.lang`.
-List of supported languages: 
-#theofig-translations.keys().join(", "). Note that unlike supplement of a figure,
-a supplement in reference changes if `text.lang` is not the same as it was
-at the location of the figure.
+Enabled by #the-param[theofig][translate-supplement],
+#param[theofig][supplement] is translated based on context-dependant
+`text.lang`. List of supported languages: #theofig-translations.keys().join(", "). 
+Note that unlike supplement of a figure, a supplement in reference changes
+if `text.lang` is not the same as it was at the location of the figure.
 
 #code-example-row(```typ
 #set text(lang: "ru")
@@ -231,10 +244,11 @@ it takes priority over `figure`'s numbering (see @def-a-3 and @def-a-4).
 
 == Numbers out of order
 
-Using the `theofig`'s argument `number`, we can specify a number regardless of
-automatic numeration. Passing a `label` to `number` copies the numbering of the
-same environment by that `label`, which is useful for alternative definitions
-or equivalent statements of theorems (see @def-1 and @def-2).
+Using #the-param[theofig][number], we can specify a number regardless of
+automatic numeration. Passing a `label` to #param[theofig][number] copies the 
+#param[theofig][numbering] of the same environment by that `label`, which is
+useful for alternative definitions or equivalent statements of theorems (see
+@def-1 and @def-2).
 
 #code-example-row(```typ
 #definition[Default.]
@@ -262,7 +276,7 @@ or equivalent statements of theorems (see @def-1 and @def-2).
 #definition[Back to default.]
 ```)
 
-Another use case for `number` argument is local numbering, such as multiple
+Another use case for #param[theofig][number] argument is local numbering, such as multiple
 corollaries immediately after a theorem:
 #code-example-row(```typ
 #theorem[]
@@ -279,8 +293,8 @@ corollaries immediately after a theorem:
 == Shared numbering
 
 If you want different environments to share numbering,
-you just need to have them have the same kind, but different
-supplement:
+you just need to have them have the same #param[theofig][kind], but different
+#param[theofig][supplement]:
 #code-example-row(```typ
 #let lemma     = lemma.with(kind: "theorem")
 #let statement = statement.with(kind: "theorem")
@@ -292,10 +306,11 @@ supplement:
 ```)
 
 One obvious limitation of that approach is that not only numbering
-will be shared. All styling of `theorem` that is based on `show` rules
-will also apply to `lemma` and `statement`. To mitigate that,
+will be shared. All styling of #fn[theorem] that is based on `show` rules
+will also apply to #fn[lemma] and #fn[statement]. To mitigate that,
 styling can be applied individually through setting arguments
-`format-caption`, `format-body`, `block-options`, and `figure-options`.
+#param[theofig][format-caption], #param[theofig][format-body],
+#param[theofig][block-options], and #param[theofig][figure-options].
 #code-example-row(```typ
 #let theorem = theorem.with(
   format-body: emph,
@@ -400,8 +415,8 @@ sticky with something like \
 
 == Limitations
 
-Because environments in `theofig` are implemented as figures, show rules
-applied to them affect nested figures of any kind, including images and tables:
+Because #fn[theofig] implemented as figure, show rules applied to it affect
+nested figures of any kind, including images and tables:
 
 #code-example-row(```typ
 #show figure.where(kind: "example"): it => {
@@ -420,11 +435,13 @@ applied to them affect nested figures of any kind, including images and tables:
   ]
 ]
 ```)
-In this example, `smallcaps` is applied not only to the `example` title, but
+In this example, `smallcaps` is applied not only to the #fn[example] title, but
 also to the actual `figure`'s caption, the same is true for numbering. 
 It is an undesirable limitation, which leads us to either moving our figures
-outside of `theofig` environments or styling each `theofig` environment individually
-like in the following example.
+outside of #fn[theofig] environments or styling each #fn[theofig] environment individually
+like in the following example, using parameters
+#param[theofig][format-caption], #param[theofig][format-body], or
+#param[theofig][format-note].
 #code-example-row(```typ
 #let example = example.with(
   numbering: "I", 
@@ -445,29 +462,28 @@ like in the following example.
 #pagebreak()
 = Main functions <func-ref>
 
-#let module-doc = tidy.parse-module(
-  read("/theofig.typ"),
-  scope: (
-    code-example-row: code-example-row,
-    ..dictionary(theofig-module)
-  ),
-  // name: "theofig",
-  old-syntax: true
-)
-#let utils-doc = tidy.parse-module(
-  read("/src/utils.typ"),
-  scope: (
-    code-example-row: code-example-row,
-    ..dictionary(theofig-module)
-  ),
-  // name: "theofig",
-  old-syntax: true
-)
+#let show-module(file) = {
+  let module-doc = tidy.parse-module(
+    read(file),
+    scope: (
+      code-example-row: code-example-row,
+      param: param,
+      the-param: the-param,
+      variable: variable,
+      ..dictionary(theofig-module)
+    ),
+    old-syntax: true
+  )
+  tidy.show-module(
+    module-doc,
+    show-outline: false,
+    sort-functions: none,
+    first-heading-level: 1,
+    style: doc-style,
+  )
+}
 
-#tidy.show-module(
-  module-doc,
-  show-outline: false,
-  // sort-functions: none,
-  first-heading-level: 2,
-  style: doc-style,
-)
+#show-module("/src/theofig.typ")
+#show-module("/src/utils.typ")
+#show-module("/src/theofig-kinds.typ")
+#show-module("/src/translations.typ")

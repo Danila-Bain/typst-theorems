@@ -27,6 +27,9 @@
 #let fn-param-label(fn-name, arg-name) = label(fn-name + "." + arg-name)
 
 #let show-parameter-list(fn) = {
+    if "return-types" not in fn {
+      return;
+    }
 	// set text(font: "Cascadia Mono", size: 0.8em, weight: 340)
 	set text(font: "DejaVu Sans Mono", size: 0.8em)
 
@@ -75,22 +78,21 @@
 			let default-multiline = type(default) == str and "\n" in default
 			block(
 				outset: 10pt,
-				radius: 10pt,
+				// radius: 10pt,
 				stroke: (top: .6pt + gray),
 			)[
-				#text(1em, {
-						strong(raw(name))
-						h(1em)
-						type-pills
-						if show-default and not default-multiline {
-							sep[default]
-							show-type(default)
-						}
-						h(1fr)
-						text(gray, link(fn-label(fn.name), $arrow.tl$))
-				})
-				#fn-param-label(fn.name, name)
-			]
+                #text(1em, {
+                    link(fn-label(fn.name), strong(raw(name)))
+                    h(1em)
+                    type-pills
+                    if show-default and not default-multiline {
+                        sep[default]
+                        show-type(default)
+                    }
+                    h(1fr)
+                })
+                #fn-param-label(fn.name, name)
+            ]
 
 			content
 
@@ -147,8 +149,8 @@
 			else { show-type(var.type, style-args: style-args) }
 
 	stack(dir: ltr, spacing: 1.2em,
-		[
-			#heading(var.name, level: style-args.first-heading-level + 1)
+		text(1.2em)[
+			#heading(raw(var.name), level: style-args.first-heading-level + 1)
 			#label(style-args.label-prefix + var.name)
 		],
 		type
