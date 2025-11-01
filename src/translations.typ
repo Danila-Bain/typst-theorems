@@ -9,6 +9,8 @@
     "corollary":      "Corollary",
     "algorithm":      "Algorithm",
     "definition":     "Definition",
+    "problem":        "Problem",
+    "solution":       "Solution",
   ),
   "ru": (
     "proof":          "Доказательство",
@@ -20,6 +22,8 @@
     "corollary":      "Следствие",
     "algorithm":      "Алгоритм",
     "definition":     "Определение",
+    "problem":        "Задача",
+    "solution":       "Решение",
   ),
   "de": (
     "proof":          "Beweis",
@@ -31,6 +35,8 @@
     "corollary":      "Korollar",
     "algorithm":      "Algorithmus",
     "definition":     "Definition",
+    "problem":        "Aufgabe",
+    "solution":       "Lösung",
   ),
   "fr": (
     "proof":          "Preuve",
@@ -42,6 +48,8 @@
     "corollary":      "Corollaire",
     "algorithm":      "Algorithme",
     "definition":     "Définition",
+    "problem":        "Problème",
+    "solution":       "Solution",
   ),
   "es": (
     "proof":          "Demostración",
@@ -53,6 +61,8 @@
     "corollary":      "Corolario",
     "algorithm":      "Algoritmo",
     "definition":     "Definición",
+    "problem":        "Problema",
+    "solution":       "Solución",
   ),
   "it": (
     "proof":          "Dimostrazione",
@@ -64,6 +74,8 @@
     "corollary":      "Corollario",
     "algorithm":      "Algoritmo",
     "definition":     "Definizione",
+    "problem":        "Problema",
+    "solution":       "Soluzione",
   ),
   "pt": (
     "proof":          "Prova",
@@ -75,6 +87,8 @@
     "corollary":      "Corolário",
     "algorithm":      "Algoritmo",
     "definition":     "Definição",
+    "problem":        "Problema",
+    "solution":       "Solução",
   ),
   "pl": (
     "proof":          "Dowód",
@@ -86,6 +100,8 @@
     "corollary":      "Wniosek",
     "algorithm":      "Algorytm",
     "definition":     "Definicja",
+    "problem":        "Zadanie",
+    "solution":       "Rozwiązanie",
   ),
   "cs": (
     "proof":          "Důkaz",
@@ -97,6 +113,8 @@
     "corollary":      "Důsledek",
     "algorithm":      "Algoritmus",
     "definition":     "Definice",
+    "problem":        "Úloha",
+    "solution":       "Řešení",
   ),
   "zh": (
     "proof":          "证明",
@@ -108,6 +126,8 @@
     "corollary":      "推论",
     "algorithm":      "算法",
     "definition":     "定义",
+    "problem":        "题目",
+    "solution":       "解答",
   ),
   "ja": (
     "proof":          "証明",
@@ -119,6 +139,8 @@
     "corollary":      "系",
     "algorithm":      "アルゴリズム",
     "definition":     "定義",
+    "problem":        "問題",
+    "solution":       "解答",
   ),
   "ko": (
     "proof":          "증명",
@@ -130,16 +152,7 @@
     "corollary":      "따름정리",
     "algorithm":      "알고리즘",
     "definition":     "정의",
-  ),
-  "ar": (
-    "proof":          "برهان",
-    "lemma":          "لمّة",
-    "remark":         "ملاحظة", 
-    "theorem":        "نظرية",
-    "example":        "مثال",
-    "statement":      "قضية",
-    "corollary":      "نتيجة",
-    "algorithm":      "خوارزمية",
-    "definition":     "تعريف",
+    "problem":        "문제",
+    "solution":       "해답",
   ),
 )

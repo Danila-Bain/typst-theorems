@@ -186,8 +186,7 @@ to a `joke` environment together with all standard environments.
 Enabled by default argument `translate-supplement: true`, 
 `theofig` environments map supplement based on context-dependant `text.lang`.
 List of supported languages: 
-#for key in theofig-translations.keys().slice(0, -1) [#key, ]
-#theofig-translations.keys().last(). Note that unlike supplement of a figure,
+#theofig-translations.keys().join(", "). Note that unlike supplement of a figure,
 a supplement in reference changes if `text.lang` is not the same as it was
 at the location of the figure.
 
