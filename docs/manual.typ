@@ -1,5 +1,7 @@
-#import "/theofig.typ" as theofig-module: *
-#import "@preview/tidy:0.4.1"
+#import "/src/theofig.typ" as theofig-module: *
+
+#import "/docs/doc-style.typ"
+#let tidy = doc-style.tidy
 
 
 #set page(numbering: "1")
@@ -20,19 +22,6 @@
 
 #let scope = dictionary(theofig-module)
 
-// #let docs = tidy.parse-module(
-//   read("/theofig.typ"),
-//   scope: (
-//     theofig: theofig
-//   ),
-//   name: "theofig",
-//   preamble: "import theofig: *\n",
-// )
-//
-// #tidy.show-module(
-//   docs, 
-//   style: tidy.styles.minimal, 
-// )
 
 #v(.2fr)
 
@@ -41,14 +30,9 @@
 		spacing: 14pt,
 		{
 			set text(1.3em)
-			// fletcher.diagram(
-			// 	edge-stroke: 1pt,
-			// 	spacing: 27mm,
-			// 	label-sep: 6pt,
-			// 	node((0,1), $A$),
-			// 	node((1,1), $B$),
-			// 	edge((0,1), (1,1), $f$, ">>->"),
-			// )
+            block(width: 75%)[
+              #definition[This is a package for theorem environments.]
+            ]
 		},
 		text(2.7em, `theofig`),
 		[_`figure` implementation of theorem environments_],
@@ -279,6 +263,20 @@ or equivalent statements of theorems (see @def-1 and @def-2).
 #definition[Back to default.]
 ```)
 
+Another use case for `number` argument is local numbering, such as multiple
+corollaries immediately after a theorem:
+#code-example-row(```typ
+#theorem[]
+#corollary[]
+#theorem[]
+#corollary(number: "1")[]
+#corollary(number: "2")[]
+#theorem[]
+#corollary(number: "1")[]
+#corollary(number: "2")[]
+```)
+
+
 == Shared numbering
 
 If you want different environments to share numbering,
@@ -441,5 +439,58 @@ like in the following example.
 ]
 ```)
 
+#pagebreak()
 = Main functions <func-ref>
 
+// #let docs = tidy.parse-module(
+//   read("/src/theofig.typ"),
+//   scope: (
+//     code-example-row: code-example-row,
+//     ..dictionary(theofig-module)
+//   ),
+//   name: "theofig",
+//   preamble: "import theofig: *\n",
+// )
+//
+// #tidy.show-module(
+//   docs, 
+//   // style: tidy.styles.minimal, 
+// )
+
+#let module-doc = tidy.parse-module(
+  read("/src/theofig.typ"),
+  scope: (
+    code-example-row: code-example-row,
+    ..dictionary(theofig-module)
+  ),
+  // name: "theofig",
+  old-syntax: true
+)
+#let utils-doc = tidy.parse-module(
+  read("/src/utils.typ"),
+  scope: (
+    code-example-row: code-example-row,
+    ..dictionary(theofig-module)
+  ),
+  // name: "theofig",
+  old-syntax: true
+)
+
+#{module-doc += utils-doc}
+//
+// 	if only != none {
+// 		let ordered-fns = only.map(fn-name => {
+// 			module-doc.functions.find(fn => fn.name == fn-name)
+// 		})
+// 		module-doc.functions = ordered-fns
+// 	}
+//
+// 	module-doc.functions = module-doc.functions.filter(fn => fn.name not in exclude)
+//
+#tidy.show-module(
+  module-doc,
+  show-outline: false,
+  sort-functions: none,
+  first-heading-level: 2,
+  style: doc-style,
+)

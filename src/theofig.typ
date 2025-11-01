@@ -5,27 +5,8 @@
   theofig-reset-counters
 )
 
-/// List of default kinds of environments defined by this package.
-/// The purpose to this variable is to be used in cunjunction with
-/// selector `figure-where-kind-in` for styling:
-/// 
-#let theofig-kinds = (
-  "proof",
-  "lemma",
-  "remark", 
-  "theorem", 
-  "example",
-  "statement",
-  "corollary",
-  "algorithm",
-  "definition",
-  "problem",
-  "solution",
-)
-
 
 #let theofig(
-  ..caption,
   kind: none, 
   supplement: auto, 
   number: auto,
@@ -37,6 +18,7 @@
   separator: ".",
   translate-supplement: true,
   qed: false,
+  ..caption,
   body
 ) = {
   
@@ -137,6 +119,36 @@
     )
   )
 }
+
+/// List of default kinds of environments defined by this package:
+///
+/// #theofig-kinds.map(s => raw("\"" + s + "\"")).join(", ", last: ", and ").
+/// 
+/// The purpose to this variable is to be used together with
+/// selector `figure-where-kind-in` for styling:
+/// #code-example-row(```typ
+/// #show figure-where-kind-in(
+///   theofig-kinds
+/// ): block.with(
+///     stroke: 1pt, radius: 3pt, inset: 5pt,
+/// )
+/// #definition[]
+/// #theorem[]
+/// #proof[]
+/// ```)
+#let theofig-kinds = (
+  "proof",
+  "lemma",
+  "remark", 
+  "theorem", 
+  "example",
+  "statement",
+  "corollary",
+  "algorithm",
+  "definition",
+  "problem",
+  "solution",
+)
 
 #let definition  = theofig.with(kind: "definition",  supplement: "Definition")
 #let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem")
