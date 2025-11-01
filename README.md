@@ -106,6 +106,92 @@ For detailed guide and documentation see
 ```
 ![example](readme-examples/2-custom-environments.svg)
 
+## Language support
+
+```typ
+#import "/src/theofig.typ": *
+#set page(paper: "a6", height: auto, margin: 6mm)
+
+#for lang in theofig-translations.keys() [
+  #set text(lang: lang)
+  #theorem[#lang][#lorem(5)]
+]
+```
+
+![example](readme-examples/3-language-support.svg)
+
+## Per-section numbering 
+
+```typ
+#import "/src/theofig.typ": *
+#set page(paper: "a6", height: auto, margin: 6mm)
+
+#let thm-numbering(n) = numbering("1.1", counter(heading).get().first(), n)
+#let eq-numbering(n) = numbering("(1.1)", counter(heading).get().first(), n)
+
+#show figure-where-kind-in(theofig-kinds): set figure(numbering: thm-numbering)
+#set math.equation(numbering: eq-numbering)
+
+#set heading(numbering: "1.")
+#show heading: it => {
+  theofig-reset-counters(theofig-kinds)
+  counter(math.equation).update(0)
+  it
+}
+
+= Addition
+
+#theorem[$ 1 + 1 = 2. $<eq-add-1>]<th-add-1>
+#theorem[$ 2 + 2 = 4. $<eq-add-2>]<th-add-2>
+#theorem[$ 4 + 4 = 8. $<eq-add-3>]<th-add-3>
+
+= Multiplication
+
+#theorem[$ 1 times 1 =  1. $<eq-mul-1>]<th-mul-1>
+#theorem[$ 2 times 2 =  4. $<eq-mul-2>]<th-mul-2>
+#theorem[$ 4 times 4 = 16. $<eq-mul-3>]<th-mul-3>
+
+= References
+Note that @th-add-2 about @eq-add-2 and
+@th-mul-2 about @eq-mul-2 are similar.
+```
+
+![example](readme-examples/4-per-section-numbering.svg)
+
+## Styling
+
+```typ
+#import "/src/theofig.typ": *
+#set page(paper: "a6", height: auto, margin: 6mm)
+
+// show rule for all (optionally except some)
+#show figure-where-kind-in(
+  theofig-kinds, except: ("proposition",)
+): it => {
+  show figure.caption: strong.with(delta: -300)
+  show: emph 
+  show figure.caption: emph // double emph = no emph
+  it
+}
+
+// show rule for one
+#show figure.where(kind: "remark"): set text(blue)
+
+// styling arguments for one
+#let proposition = proposition.with(
+  format-caption: (underline, text.with(tracking: 3pt)),
+  format-body: smallcaps,
+)
+
+#definition[#lorem(15)]
+#theorem[#lorem(15)]
+#remark[#lorem(15)]
+
+#proposition[#lorem(15)]
+```
+
+![example](readme-examples/5-styling.svg)
+
 # Why another one?
 
 There is a number of packages for theorem environments, including [all
@@ -114,7 +200,8 @@ similar to this project, but differ in small details of how style
 customization is handled. Our package offers predefined commands
 such as `#definition`, `#theorem`, `#proof`, ..., together with
 style customization which can be applied to all or some environments.
-We focus on minimalization of necessary boilerplate in preambule,
-aiming to provide a package which is setup in 1-5 lines of code in preambule
-for most of uses with reasonable ability to customize further when needed. 
+This project aims to offer a one-import solution to theorem environments 
+with sencible defaults, providing with an intuitive (i.e. following
+standard typst coding practices) capabilities for customization when it is
+needed.
 
