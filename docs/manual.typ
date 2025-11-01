@@ -442,21 +442,6 @@ like in the following example.
 #pagebreak()
 = Main functions <func-ref>
 
-// #let docs = tidy.parse-module(
-//   read("/src/theofig.typ"),
-//   scope: (
-//     code-example-row: code-example-row,
-//     ..dictionary(theofig-module)
-//   ),
-//   name: "theofig",
-//   preamble: "import theofig: *\n",
-// )
-//
-// #tidy.show-module(
-//   docs, 
-//   // style: tidy.styles.minimal, 
-// )
-
 #let module-doc = tidy.parse-module(
   read("/src/theofig.typ"),
   scope: (
@@ -476,7 +461,6 @@ like in the following example.
   old-syntax: true
 )
 
-#{module-doc += utils-doc}
 //
 // 	if only != none {
 // 		let ordered-fns = only.map(fn-name => {
@@ -490,7 +474,7 @@ like in the following example.
 #tidy.show-module(
   module-doc,
   show-outline: false,
-  sort-functions: none,
+  // sort-functions: none,
   first-heading-level: 2,
   style: doc-style,
 )

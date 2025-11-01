@@ -23,12 +23,8 @@
 	box(outset: 2pt, fill: c, radius: 2pt, raw(type))
 }
 
-
 #let fn-label(fn-name) = label(fn-name + "()")
 #let fn-param-label(fn-name, arg-name) = label(fn-name + "." + arg-name)
-
-
-
 
 #let show-parameter-list(fn) = {
 	// set text(font: "Cascadia Mono", size: 0.8em, weight: 340)
@@ -61,8 +57,6 @@
 		fn.return-types.map(show-type).join(" ")
 	}
 }
-
-
 
 // Create a parameter description block, containing name, type, description and optionally the default value.
 #let show-parameter-block(

@@ -28,6 +28,8 @@
 ///
 /// - ..functions (array of functions): List of functions that are
 ///   applied to `figure.caption` by `show figure.caption: func`.
+///
+/// -> function
 #let show-figure-caption(..functions) = it => {
   for func in functions.pos() {
     it = [
@@ -58,7 +60,10 @@
 ///
 /// - kinds (array): A list of figure kinds (e.g. `"theorem"`, `"definition"`,
 ///   ...) to include in the selector.
-/// - except (array): A list of figure kinds to exclude from the resulting selector.
+/// - except (array): A list of figure kinds to exclude from the resulting
+///   selector.
+///
+/// -> selector
 #let figure-where-kind-in(kinds, except: ()) = {
   return selector.or(
     ..kinds
