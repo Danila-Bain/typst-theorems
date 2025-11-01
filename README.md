@@ -43,7 +43,7 @@ For detailed guide and documentation see
 ### Basic usage
 
 ```typ
-#import "/src/theofig.typ": *
+#import "/theofig.typ": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #definition[#lorem(5)]<def-1>
@@ -65,10 +65,10 @@ For detailed guide and documentation see
 
 ### Custom environments
 ```typ
-#import "/src/theofig.typ": theofig, problem, solution
+#import "/theofig.typ": theofig, problem, solution
 #set page(paper: "a6", height: auto, margin: 6mm)
 
-#let hard_problem = theofig.with(
+#let hard-problem = theofig.with(
   supplement: "Problem", 
   numbering: n => $#n^*$
 )
@@ -91,25 +91,16 @@ For detailed guide and documentation see
 
 = Custom
 
-#hard_problem[ Prove that $ZZ_2$ is a field. ]
+#hard-problem[ Prove that $ZZ_2$ is a field. ]
 
 #hint[ Verify all axioms of a field exaustively. ]
-]
-
-#hard_problem[
-  Prove that $ZZ_2$ is a field.
-]
-
-#hint[
-  Verify all axioms of a field exaustively.
-]
 ```
 ![example](readme-examples/2-custom-environments.svg)
 
 ### Language support
 
 ```typ
-#import "/src/theofig.typ": *
+#import "/theofig.typ": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #for lang in theofig-translations.keys() [
@@ -123,7 +114,7 @@ For detailed guide and documentation see
 ### Per-section numbering 
 
 ```typ
-#import "/src/theofig.typ": *
+#import "/theofig.typ": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #let thm-numbering(n) = numbering("1.1", counter(heading).get().first(), n)
@@ -161,7 +152,7 @@ Note that @th-add-2 about @eq-add-2 and
 ### Styling
 
 ```typ
-#import "/src/theofig.typ": *
+#import "/theofig.typ": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 // show rule for all (optionally except some)

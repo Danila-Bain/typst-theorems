@@ -1,4 +1,4 @@
-#import "/src/theofig.typ": *
+#import "/theofig.typ": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #let thm-numbering(n) = numbering("1.1", counter(heading).get().first(), n)

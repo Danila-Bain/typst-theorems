@@ -1,5 +1,5 @@
 // https://github.com/Jollywatt/typst-fletcher/blob/main/docs/style.typ
-#import "@preview/tidy:0.4.1"
+#import "@preview/tidy:0.4.3"
 
 #let function-name-color = tidy.styles.default.function-name-color
 #let rainbow-map = tidy.styles.default.rainbow-map
@@ -165,38 +165,3 @@
 	link(label, raw(name))
 }
 
-
-// // link to a specific parameter of a function
-// #let param(func, arg, full: false) = {
-// 	let func = func.text
-// 	let arg = arg.text
-// 	let l1 = style.fn-param-label(func, arg)
-// 	let l2 = style.fn-label(func)
-// 	if full {
-// 		[the #link(l1, raw(arg)) option of #link(l2, raw(func + "()"))]
-// 	} else {
-// 		link(l1, raw(arg))
-// 	}
-// }
-// #let the-param = param.with(full: true)
-
-// #let show-fns(file, only: none, exclude: (), level: 1, outline: false) = {
-// 	let module-doc = tidy.parse-module(read(file), scope: scope, old-syntax: true)
-//
-// 	if only != none {
-// 		let ordered-fns = only.map(fn-name => {
-// 			module-doc.functions.find(fn => fn.name == fn-name)
-// 		})
-// 		module-doc.functions = ordered-fns
-// 	}
-//
-// 	module-doc.functions = module-doc.functions.filter(fn => fn.name not in exclude)
-//
-// 	tidy.show-module(
-// 		module-doc,
-// 		show-outline: outline,
-// 		sort-functions: none,
-// 		first-heading-level: level,
-// 		style: style,
-// 	)
-// }

@@ -1,4 +1,4 @@
-#import "/src/theofig.typ": *
+#import "/theofig.typ": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #definition[#lorem(5)]<def-1>

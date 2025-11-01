@@ -1,7 +1,7 @@
-#import "/src/theofig.typ": theofig, problem, solution
+#import "/theofig.typ": theofig, problem, solution
 #set page(paper: "a6", height: auto, margin: 6mm)
 
-#let hard_problem = theofig.with(
+#let hard-problem = theofig.with(
   supplement: "Problem", 
   numbering: n => $#n^*$
 )
@@ -24,6 +24,6 @@
 
 = Custom
 
-#hard_problem[ Prove that $ZZ_2$ is a field. ]
+#hard-problem[ Prove that $ZZ_2$ is a field. ]
 
 #hint[ Verify all axioms of a field exaustively. ]
