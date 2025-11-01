@@ -79,14 +79,40 @@
 ///   the `supplement` (the title part) before rendering. If `none`, no special
 ///   formatting is applied. Typical values: `emph`, `smallcaps`, `strong`, or
 ///   user-provided functions.
+///
+///   === Example
+///   #code-example-row(```typst
+///   #theorem[]
+///   #theorem(format-caption: none)[]
+///   #theorem(format-caption: emph)[]
+///   #theorem(format-caption:(smallcaps,underline))[]
+///   ```)
 /// 
 /// - format-body (none, function, array of functions): Function(s) applied to the
 ///   body content (the environment contents). If `none`, no additional formatting
 ///   is applied.
 ///
+///   === Example
+///   #code-example-row(```typst
+///   #theorem[#lorem(5)]
+///   #theorem(format-body: emph)[#lorem(5)]
+///   #theorem(
+///     format-body: (text.with(blue), smallcaps,)
+///   )[#lorem(4)]
+///   ```)
+///
 /// - format-note (none, function, array of functions): Function(s) applied to the
 ///   note content (additional info to the caption, like authorship, date, or
 ///   source). If `none`, no additional formatting is applied.
+///   === Example
+///   #code-example-row(```typst
+///   #theorem[Note][#lorem(3)]
+///   #theorem(format-note: none)[`{Note}`][#lorem(3)]
+///   #theorem(format-note: 
+///     it => strong(delta: -300, [[#it]])
+///   )[Note][#lorem(3)]
+///   #theorem(format-note: (raw, emph), "note")[#lorem(3)]
+///   ```)
 ///
 /// - separator (none, str, content): Text appended between caption 
 ///   (supplement + caption + numbering) and the body. Behavior:
@@ -192,9 +218,10 @@
       ..block-options,
       context {
 
+        let body = body
+        let note = note
         let supplement = supplement
         let numbering = numbering 
-        let body = body
         let separator = separator
         
         if number != auto {
@@ -211,11 +238,16 @@
 
         if note != none { 
           if format-note != none {
-            supplement += [ #format-note(note)] 
-          } else {
-            supplement += [ #note] 
+            if type(format-note) == array {
+              for f in format-note {
+                note = f(note)
+              }
+            } else {
+              note = format-note(note)
+            } 
           }
         }
+        supplement += [ #note] 
 
         if separator == auto {
           if (figure.caption.separator != auto) {
@@ -227,10 +259,23 @@
         supplement += separator
 
         if format-caption != none {
+          if type(format-caption) == array {
+            for f in format-caption {
+              supplement = f(supplement)
+            }
+          } else {
             supplement = format-caption(supplement)
+          } 
         }
+
         if format-body != none {
+          if type(format-body) == array {
+            for f in format-body {
+              body = f(body)
+            }
+          } else {
             body = format-body(body)
+          } 
         }
 
         set par(first-line-indent: par.first-line-indent + (all: false))
