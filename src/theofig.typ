@@ -138,8 +138,6 @@
   )
 }
 
-
-
 #let definition  = theofig.with(kind: "definition",  supplement: "Definition")
 #let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem")
 #let proof       = theofig.with(kind: "proof", numbering: none, qed: true)
@@ -154,63 +152,3 @@
 #let algorithm   = theofig.with(kind: "algorithm",   supplement: "Algorithm")
 #let problem     = theofig.with(kind: "problem",     supplement: "Problem")
 #let solution    = theofig.with(kind: "solution",    supplement: "Solution", numbering: none)
-
-
-
-#let theofig-styles = (
-  "bold-title": (it, kinds) => {
-    show figure-where-kind-in(kinds): show-figure-caption(strong)
-    it
-  },
-  "italic-title": (it, kinds) => {
-    show figure-where-kind-in(kinds): show-figure-caption(emph)
-    it
-  },
-  "italic-body": (it, kinds) => {
-    show figure-where-kind-in(kinds): (it) => {
-      show figure.caption: emph
-      show: emph
-      it
-    }
-    it
-  },
-  "block": (it, kinds) => {
-    show figure-where-kind-in(kinds): (it) => {
-      show: block.with(stroke: 1pt, inset: 6pt, radius: 3pt)
-      it
-    }
-    it
-  },
-  "breakable": (it, kinds) => {
-    show figure-where-kind-in(kinds): (it) => {
-      set block(breakable: true)
-      it
-    }
-    it
-  },
-  "not-breakable": (it, kinds) => {
-    show figure-where-kind-in(kinds): (it) => {
-      set block(breakable: false)
-      it
-    }
-    it
-  },
-)
-
-#let theofig-style(..options, kinds: (), except: ()) = (it) => {
-  let kinds = kinds
-  if (kinds == ()) {
-    kinds = theofig-kinds.filter(x => x not in except)
-  }
-  for option in options.pos() {
-    it = (theofig-styles.at(option))(it, kinds)
-  }
-  it
-}
-
-#let theofig-style-light = theofig-style.with("italic-title", "breakable")
-#let theofig-style-default = theofig-style.with("bold-title", "breakable")
-#let theofig-style-italic = theofig-style.with("bold-title", "italic-body", "breakable")
-#let theofig-style-block = theofig-style.with("bold-title", "block")
-#let theofig-style-block-italic = theofig-style.with("bold-title", "italic-body", "block")
-
