@@ -1,3 +1,14 @@
+#import "translations.typ": theofig-translations
+#import "utils.typ": (
+  figure-where-kind-in, 
+  show-figure-caption, 
+  theofig-reset-counters
+)
+
+/// List of default kinds of environments defined by this package.
+/// The purpose to this variable is to be used in cunjunction with
+/// selector `figure-where-kind-in` for styling:
+/// 
 #let theofig-kinds = (
   "proof",
   "lemma",
@@ -11,157 +22,6 @@
   "problem",
   "solution",
 )
-
-/// Per-language list of default suppliments 
-/// ```example
-/// #theofig-translations()
-/// ```
-#let theofig-translations = (
-  "en": (
-    "proof":          "Proof",
-    "lemma":          "Lemma",
-    "remark":         "Remark", 
-    "theorem":        "Theorem",
-    "example":        "Example",
-    "statement":      "Statement",
-    "corollary":      "Corollary",
-    "algorithm":      "Algorithm",
-    "definition":     "Definition",
-  ),
-  "ru": (
-    "proof":          "Доказательство",
-    "lemma":          "Лемма",
-    "remark":         "Замечание", 
-    "theorem":        "Теорема",
-    "example":        "Пример",
-    "statement":      "Утверждение",
-    "corollary":      "Следствие",
-    "algorithm":      "Алгоритм",
-    "definition":     "Определение",
-  ),
-  "de": (
-    "proof":          "Beweis",
-    "lemma":          "Lemma",
-    "remark":         "Bemerkung", 
-    "theorem":        "Satz",
-    "example":        "Beispiel",
-    "statement":      "Aussage",
-    "corollary":      "Korollar",
-    "algorithm":      "Algorithmus",
-    "definition":     "Definition",
-  ),
-  "fr": (
-    "proof":          "Preuve",
-    "lemma":          "Lemme",
-    "remark":         "Remarque", 
-    "theorem":        "Théorème",
-    "example":        "Exemple",
-    "statement":      "Énoncé",
-    "corollary":      "Corollaire",
-    "algorithm":      "Algorithme",
-    "definition":     "Définition",
-  ),
-  "es": (
-    "proof":          "Demostración",
-    "lemma":          "Lema",
-    "remark":         "Observación", 
-    "theorem":        "Teorema",
-    "example":        "Ejemplo",
-    "statement":      "Enunciado",
-    "corollary":      "Corolario",
-    "algorithm":      "Algoritmo",
-    "definition":     "Definición",
-  ),
-  "it": (
-    "proof":          "Dimostrazione",
-    "lemma":          "Lemma",
-    "remark":         "Osservazione", 
-    "theorem":        "Teorema",
-    "example":        "Esempio",
-    "statement":      "Enunciato",
-    "corollary":      "Corollario",
-    "algorithm":      "Algoritmo",
-    "definition":     "Definizione",
-  ),
-  "pt": (
-    "proof":          "Prova",
-    "lemma":          "Lema",
-    "remark":         "Observação", 
-    "theorem":        "Teorema",
-    "example":        "Exemplo",
-    "statement":      "Enunciado",
-    "corollary":      "Corolário",
-    "algorithm":      "Algoritmo",
-    "definition":     "Definição",
-  ),
-  "pl": (
-    "proof":          "Dowód",
-    "lemma":          "Lemat",
-    "remark":         "Uwaga", 
-    "theorem":        "Twierdzenie",
-    "example":        "Przykład",
-    "statement":      "Stwierdzenie",
-    "corollary":      "Wniosek",
-    "algorithm":      "Algorytm",
-    "definition":     "Definicja",
-  ),
-  "cs": (
-    "proof":          "Důkaz",
-    "lemma":          "Lemma",
-    "remark":         "Poznámka", 
-    "theorem":        "Věta",
-    "example":        "Příklad",
-    "statement":      "Tvrzení",
-    "corollary":      "Důsledek",
-    "algorithm":      "Algoritmus",
-    "definition":     "Definice",
-  ),
-  "zh": (
-    "proof":          "证明",
-    "lemma":          "引理",
-    "remark":         "注释", 
-    "theorem":        "定理",
-    "example":        "例子",
-    "statement":      "命题",
-    "corollary":      "推论",
-    "algorithm":      "算法",
-    "definition":     "定义",
-  ),
-  "ja": (
-    "proof":          "証明",
-    "lemma":          "補題",
-    "remark":         "注", 
-    "theorem":        "定理",
-    "example":        "例",
-    "statement":      "命題",
-    "corollary":      "系",
-    "algorithm":      "アルゴリズム",
-    "definition":     "定義",
-  ),
-  "ko": (
-    "proof":          "증명",
-    "lemma":          "보조정리",
-    "remark":         "비고", 
-    "theorem":        "정리",
-    "example":        "예",
-    "statement":      "명제",
-    "corollary":      "따름정리",
-    "algorithm":      "알고리즘",
-    "definition":     "정의",
-  ),
-  "ar": (
-    "proof":          "برهان",
-    "lemma":          "لمّة",
-    "remark":         "ملاحظة", 
-    "theorem":        "نظرية",
-    "example":        "مثال",
-    "statement":      "قضية",
-    "corollary":      "نتيجة",
-    "algorithm":      "خوارزمية",
-    "definition":     "تعريف",
-  ),
-)
-
 
 
 #let theofig(
@@ -280,7 +140,6 @@
 
 
 
-// #let theorem-figure-defaults = none
 #let definition  = theofig.with(kind: "definition",  supplement: "Definition")
 #let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem")
 #let proof       = theofig.with(kind: "proof", numbering: none, qed: true)
@@ -297,28 +156,6 @@
 #let solution    = theofig.with(kind: "solution",    supplement: "Solution", numbering: none)
 
 
-#let figure-where-kind-in(kinds, except: ()) = {
-  return selector.or(
-    ..kinds
-    .filter(
-      kind => kind not in except
-    )
-    .map(
-      kind => figure.where(kind: kind)
-    )
-  )
-}
-
-
-#let show-figure-caption(..functions) = it => {
-  for func in functions.pos() {
-    it = [
-      #show figure.caption: func
-      #it
-    ]
-  }
-  it
-}
 
 #let theofig-styles = (
   "bold-title": (it, kinds) => {
@@ -377,11 +214,3 @@
 #let theofig-style-block = theofig-style.with("bold-title", "block")
 #let theofig-style-block-italic = theofig-style.with("bold-title", "italic-body", "block")
 
-
-#let theofig-reset-counters(kinds, except: ()) = {
-  for kind in kinds {
-    if kind not in except {
-      counter(figure.where(kind: kind)).update(0)
-    }
-  }
-}
