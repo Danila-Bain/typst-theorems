@@ -11,8 +11,6 @@
 /// `#theorem`, `#definition`, `#proof`) are created with `.with(...)`
 /// specializations of this function.
 /// 
-/// 
-/// 
 /// - body (content): The contents of the environment.
 ///   === Example
 ///   #code-example-row(```typst
@@ -35,6 +33,19 @@
 ///   left `auto` and a string `supplement` is provided (not `auto` or
 ///   `content`), the function will set `kind = lower(supplement)` so the kind
 ///   can be inferred from the supplement like `"Theorem"` $->$ `"theorem"`.
+///
+///   === Example
+///   #code-example-row(```typst
+///   #let axiom = theofig.with(
+///     supplement: "Axiom", kind: "definition"
+///   )
+///   #definition[]
+///   #axiom[
+///     Due to (`kind: "definition"`), numbering and 
+///     show rules are shared with `#definition()`.
+///   ]
+///   #definition[]
+///   ```)
 /// 
 /// - supplement (auto, str, content): The figure supplement (the
 ///   textual label that appears as the environment title, e.g. `"Theorem"`,
