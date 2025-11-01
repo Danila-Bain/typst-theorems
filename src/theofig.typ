@@ -20,7 +20,7 @@
 ///   #theorem[Another body]
 ///   ```)
 ///
-/// - ..caption (array with one element): Additional text in supplement, i.e. 
+/// - ..note (array with one element): Additional text in supplement, i.e. 
 ///   author, year, or source of the theorem, like in *Theorem 1 (Cauchy, 1831).*
 ///   === Example
 ///   #code-example-row(```typst
@@ -28,7 +28,7 @@
 ///   #theorem[Newton–Leibniz][
 ///     $ integral_a^b f'(x) dif x = f(b) - f(a). $
 ///   ]
-///   Note the absence of caption in reference of @th-1.
+///   Note the absence of note in reference of @th-1.
 ///   ```)
 ///
 /// - kind (auto, str): The internal `figure.kind` value. If
@@ -84,6 +84,10 @@
 ///   body content (the environment contents). If `none`, no additional formatting
 ///   is applied.
 ///
+/// - format-note (none, function, array of functions): Function(s) applied to the
+///   note content (additional info to the caption, like authorship, date, or
+///   source). If `none`, no additional formatting is applied.
+///
 /// - separator (none, str, content): Text appended between caption 
 ///   (supplement + caption + numbering) and the body. Behavior:
 ///   - `auto` --- follows `figure.caption.separator`. If `figure.caption.separator` is also auto, separator becomes `"."`.
@@ -119,7 +123,7 @@
 ///   marker. Note that `math.qed` symbol can be changed using 
 ///   `show math.qed: ...` rule.
 #let theofig(
-  ..caption,
+  ..note,
   body,
   kind: auto, 
   supplement: auto, 
@@ -129,12 +133,13 @@
   figure-options: (:),
   format-caption: strong,
   format-body: none,
+  format-note: it => [(#it)],
   separator: auto,
   translate-supplement: true,
   qed: false,
 ) = {
   
-  let caption = caption.pos().at(0, default: none)
+  let note = note.pos().at(0, default: none)
   
   if (kind == auto and type(supplement) == str) { kind = lower(supplement) }
 
@@ -204,8 +209,12 @@
           supplement += [ #counter(figure.where(kind: kind)).display(numbering)]
         }
 
-        if caption != none { 
-          supplement += [ (#caption)] 
+        if note != none { 
+          if format-note != none {
+            supplement += [ #format-note(note)] 
+          } else {
+            supplement += [ #note] 
+          }
         }
 
         if separator == auto {
