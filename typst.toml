@@ -1,11 +1,12 @@
 [package]
 name = "theofig"
 version = "0.0.1"
+compiler = "0.13.0"
 entrypoint = "theofig.typ"
 authors = ["Danila Bain <danila.bain@yandex.com>"]
 license = "MIT"
 description = "Simple theorem environments."
-# repository = ""
+repository = "https://github.com/Danila-Bain/typst-theorems"
 keywords = ["theorem"]
 categories = ["model"]
-# exclude = ["example.*"]
+exclude = ["readme-examples/", "docs/"]

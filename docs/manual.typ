@@ -1,4 +1,4 @@
-#import "/src/theofig.typ" as theofig-module: *
+#import "/theofig.typ" as theofig-module: *
 
 #import "/docs/doc-style.typ"
 #let tidy = doc-style.tidy
@@ -446,7 +446,7 @@ like in the following example.
 = Main functions <func-ref>
 
 #let module-doc = tidy.parse-module(
-  read("/src/theofig.typ"),
+  read("/theofig.typ"),
   scope: (
     code-example-row: code-example-row,
     ..dictionary(theofig-module)
@@ -464,16 +464,6 @@ like in the following example.
   old-syntax: true
 )
 
-//
-// 	if only != none {
-// 		let ordered-fns = only.map(fn-name => {
-// 			module-doc.functions.find(fn => fn.name == fn-name)
-// 		})
-// 		module-doc.functions = ordered-fns
-// 	}
-//
-// 	module-doc.functions = module-doc.functions.filter(fn => fn.name not in exclude)
-//
 #tidy.show-module(
   module-doc,
   show-outline: false,
