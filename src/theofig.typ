@@ -84,16 +84,26 @@
 ///   body content (the environment contents). If `none`, no additional formatting
 ///   is applied.
 ///
-/// - separator (none, str, content): Text appended between caption (supplement
-///   + caption + numbering) and the body. Overridden if `figure.caption.separator` 
-///   show rule is set to non-`auto`.
+/// - separator (none, str, content): Text appended between caption 
+///   (supplement + caption + numbering) and the body. Behavior:
+///   - `auto` --- follows `figure.caption.separator`. If `figure.caption.separator` is also auto, separator becomes `"."`.
+///   - Otherwise, this argument takes precedence over `figure.caption.separator`.
 ///
-///   === Example 1
+///   === Example
 ///   #code-example-row(```typst
-///   #definition[#lorem(4)]
-///   #definition(separator: ":")[#lorem(4)]
-///   // #show figure.where(kind: "definition"): set figure.caption(separator: "?")
-///   // #definition[#lorem(4)]
+///   #definition[Default separator.]
+///
+///   #show figure.where(
+///     kind: "definition"
+///   ): set figure.caption(separator: "?")
+///   #definition[Separator from show rule.]
+///
+///   #let definition = definition.with(
+///     separator: none
+///   )
+///   #definition[Separator from `.with()` specialization.]
+///
+///   #definition(separator: ":")[Separator from argument.]
 ///   ```)
 /// 
 /// - translate-supplement (bool): Whether a provided `supplement` should be
@@ -119,7 +129,7 @@
   figure-options: (:),
   format-caption: strong,
   format-body: none,
-  separator: ".",
+  separator: auto,
   translate-supplement: true,
   qed: false,
 ) = {
@@ -180,6 +190,7 @@
         let supplement = supplement
         let numbering = numbering 
         let body = body
+        let separator = separator
         
         if number != auto {
           counter(figure.where(kind: kind)).update(n => n - 1)
@@ -197,8 +208,12 @@
           supplement += [ (#caption)] 
         }
 
-        if (figure.caption.separator != auto) {
-          separator = figure.caption.separator
+        if separator == auto {
+          if (figure.caption.separator != auto) {
+            separator = figure.caption.separator
+          } else {
+            separator = "."
+          }
         }
         supplement += separator
 
