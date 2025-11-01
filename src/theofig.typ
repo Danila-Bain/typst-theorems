@@ -100,6 +100,27 @@
 ///   Setting `auto` makes the function use either `figure.numbering` (default),
 ///   otherwise this argument takes precedence over `figure.numbering`, which
 ///   can be set using show rules or `figure-options` argument.
+///   #code-example-row(```typst
+///   #definition[It is @def-r-1.]<def-r-1>
+///
+///   #show figure.where(kind: "definition"): set figure(numbering: "A")
+///   #definition[It is @def-r-2.]<def-r-2>
+///
+///   #let definition = definition.with(
+///     figure-options: (numbering: "I"),
+///   )
+///   #definition[It is @def-r-3.]<def-r-3>
+///   
+///   #let definition = definition.with(
+///     numbering: "(i)",
+///   )
+///   #definition[It is @def-r-4.]<def-r-4>
+///
+///   #let definition = definition.with(
+///     numbering: numbering.with("(i)"),
+///   )
+///   #definition[It is @def-r-5.]<def-r-5>
+///   ```)
 /// 
 /// - block-options (dictionary): Options passed to the inner
 ///   `block(...)` call; use to control visual block styling (stroke, inset,
@@ -267,7 +288,11 @@
         }
 
         if numbering == auto {
-          numbering = figure.numbering
+          if "numbering" in figure-options {
+            numbering = figure-options.numbering
+          } else {
+            numbering = figure.numbering
+          }
         }
 
         if numbering != none {
