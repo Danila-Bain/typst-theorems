@@ -60,6 +60,30 @@
 ///     `supplement` is used as is.
 ///   - If `kind` is `auto` and `supplement`, `kind` is set to
 ///     `lower(supplement)` (automatic kind from supplement).
+///
+///   === Example 1: Automatic kind selection
+///   #code-example-row(```typst
+///   #let story = theofig.with(supplement: "Story")
+///   #show figure.where(kind: "story"): text.with(
+///     fill: gradient.linear(
+///       red, orange, green, blue, fuchsia
+///     ),
+///   )
+///   #story[#lorem(25)]
+///   #story[#lorem(5)]
+///   ```)
+///
+///   === Example 2: Content supplement
+///   #code-example-row(```typst
+///   #let dream = theofig.with(
+///     supplement: [D#sub[R]#super[E]#sub[A]M],
+///     kind: "dream",
+///   )
+///   #dream[I am in a @dream-2.]<dream-2>
+///   ```)
+///
+///   Note that if `kind` was omitted in the example 2, numeration would be
+///   shown, but counter would be 0 everywhere.
 /// 
 /// - number (auto, int, label, other): Allows overriding the environment
 ///   number. Behaviors:
@@ -154,6 +178,9 @@
 ///   the current contextual `text.lang`. Note that if figure and a reference to it 
 ///   are in different languages, figure caption and reference supplement will have
 ///   different languages as well.
+///
+///   It is `false` by default but is set to `true` for all user-facing environments
+///   #theofig-kinds.map(s => raw("#" + s + "()")).join(", ", last: ", and ").
 /// 
 /// - qed (bool): If `true`, a `math.qed` marker (rendered as a box `∎`) is
 ///   added after the body. This is used for `proof` to append the end-of-proof
@@ -172,7 +199,7 @@
   format-body: none,
   format-note: it => [(#it)],
   separator: auto,
-  translate-supplement: true,
+  translate-supplement: false,
   qed: false,
 ) = {
   
@@ -257,8 +284,8 @@
               note = format-note(note)
             } 
           }
+          supplement += [ #note] 
         }
-        supplement += [ #note] 
 
         if separator == auto {
           if (figure.caption.separator != auto) {
@@ -332,17 +359,17 @@
   "solution",
 )
 
-#let definition  = theofig.with(kind: "definition",  supplement: "Definition")
-#let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem")
-#let proof       = theofig.with(kind: "proof", numbering: none, qed: true)
+#let definition  = theofig.with(kind: "definition",  supplement: "Definition", translate-supplement: true)
+#let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem", translate-supplement: true)
+#let proof       = theofig.with(kind: "proof", numbering: none, qed: true, translate-supplement: true)
 
-#let lemma       = theofig.with(kind: "lemma",       supplement: "Lemma")
-#let statement   = theofig.with(kind: "statement",   supplement: "Statement")
-#let remark      = theofig.with(kind: "remark",      supplement: "Remark")
-#let corollary   = theofig.with(kind: "corollary",   supplement: "Corollary", numbering: none)
-#let proposition = theofig.with(kind: "proposition", supplement: "Proposition")
+#let lemma       = theofig.with(kind: "lemma",       supplement: "Lemma", translate-supplement: true)
+#let statement   = theofig.with(kind: "statement",   supplement: "Statement", translate-supplement: true)
+#let remark      = theofig.with(kind: "remark",      supplement: "Remark", translate-supplement: true)
+#let corollary   = theofig.with(kind: "corollary",   supplement: "Corollary", numbering: none, translate-supplement: true)
+#let proposition = theofig.with(kind: "proposition", supplement: "Proposition", translate-supplement: true)
 
-#let example     = theofig.with(kind: "example",     supplement: "Example")
-#let algorithm   = theofig.with(kind: "algorithm",   supplement: "Algorithm")
-#let problem     = theofig.with(kind: "problem",     supplement: "Problem")
-#let solution    = theofig.with(kind: "solution",    supplement: "Solution", numbering: none)
+#let example     = theofig.with(kind: "example",     supplement: "Example", translate-supplement: true)
+#let algorithm   = theofig.with(kind: "algorithm",   supplement: "Algorithm", translate-supplement: true)
+#let problem     = theofig.with(kind: "problem",     supplement: "Problem", translate-supplement: true)
+#let solution    = theofig.with(kind: "solution",    supplement: "Solution", numbering: none, translate-supplement: true)
