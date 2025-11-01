@@ -349,6 +349,10 @@ can be style using `show figure.caption: ...` rules.
 
 == Style examples
 
+Note that in the following examples, in order for `block`-ed styles to be
+breakable without visual glitches, you should make blocks inside a `figure`
+sticky with something like \
+`show figure-where-kind-in(theofig-kinds): set block(breakable: true, sticky: true)`.
 #code-example-row(```typ
 #theorem[Default. #lorem(16)]
 

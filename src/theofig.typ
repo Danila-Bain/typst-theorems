@@ -247,11 +247,8 @@
   translate-supplement: false,
   qed: false,
 ) = {
-  
   let note = note.pos().at(0, default: none)
-  
   if (kind == auto and type(supplement) == str) { kind = lower(supplement) }
-
   let supplement = context { 
     if (supplement == auto) {
       theofig-translations.at(text.lang).at(kind, default: kind)
@@ -261,7 +258,6 @@
       supplement
     }
   } 
-
   if (number != auto) {
       if type(number) == label {
         if numbering == auto {
@@ -285,22 +281,20 @@
           numbering = (..) => number
       }
   }
-
   if numbering != auto {
     figure-options += (numbering: numbering)
   }
-
   figure(
-    placement: none, 
+    // placement: none, 
     kind: kind, 
     supplement: supplement, 
     ..figure-options,
     block(
       width: 100%,
       breakable: true,
+      sticky: true,
       ..block-options,
       context {
-
         let body = body
         let note = note
         let supplement = supplement
@@ -367,12 +361,8 @@
 
         set par(first-line-indent: par.first-line-indent + (all: false))
 
-        align(
-          left, 
-          [
-            #box(figure.caption(supplement)) #body #if (qed) { h(1fr); math.qed }
-          ]
-        )
+        set align(left)
+        [#box(figure.caption(supplement)) #body #if (qed) { h(1fr); math.qed }]
       }
     )
   )
