@@ -1,4 +1,4 @@
-# typst-theorems
+# theofig
 
 An implementation of theorem environments for
 [Typst](https://github.com/typst/typst).
@@ -8,7 +8,7 @@ Import as
 #import "@preview/theofigs:0.0.1": *
 ```
 
-# Features
+## Features
 
 - Many default theorem environments:
     - `definition`,
@@ -33,14 +33,14 @@ Import as
 - Environments can be customized using arguments in the corresponding functions.
 - Default environments are translated depending on `lang.text` to many languages.
 
-# Documentation
+## Documentation
 
 For detailed guide and documentation see 
 [manual](https://github.com/Danila-Bain/typst-theorems/tree/main/docs/manual.pdf).
 
-# Examples
+## Examples
 
-## Basic usage
+### Basic usage
 
 ```typ
 #import "/src/theofig.typ": *
@@ -63,7 +63,7 @@ For detailed guide and documentation see
 ![example](readme-examples/1-basic-usage.svg)
 
 
-## Custom environments
+### Custom environments
 ```typ
 #import "/src/theofig.typ": theofig, problem, solution
 #set page(paper: "a6", height: auto, margin: 6mm)
@@ -106,7 +106,7 @@ For detailed guide and documentation see
 ```
 ![example](readme-examples/2-custom-environments.svg)
 
-## Language support
+### Language support
 
 ```typ
 #import "/src/theofig.typ": *
@@ -120,7 +120,7 @@ For detailed guide and documentation see
 
 ![example](readme-examples/3-language-support.svg)
 
-## Per-section numbering 
+### Per-section numbering 
 
 ```typ
 #import "/src/theofig.typ": *
@@ -158,7 +158,7 @@ Note that @th-add-2 about @eq-add-2 and
 
 ![example](readme-examples/4-per-section-numbering.svg)
 
-## Styling
+### Styling
 
 ```typ
 #import "/src/theofig.typ": *
@@ -192,7 +192,7 @@ Note that @th-add-2 about @eq-add-2 and
 
 ![example](readme-examples/5-styling.svg)
 
-# Why another one?
+## Why another one?
 
 There is a number of packages for theorem environments, including [all
 theese](https://typst.app/universe/search/?q=theorem). Many of them are

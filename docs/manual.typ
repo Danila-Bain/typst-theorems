@@ -104,8 +104,6 @@
 
 = Usage examples
 
-Importing everything with `*` is recommended:
-
 #raw(lang: "typ", "#import \"@preview/theofig:" + VERSION + "\": *")
 
 
