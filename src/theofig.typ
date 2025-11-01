@@ -9,7 +9,31 @@
 /// This is the core factory function which implements a theorem-like
 /// environment on top of `figure`. Most user-facing environments (e.g.
 /// `#theorem`, `#definition`, `#proof`) are created with `.with(...)`
-/// specializations of this function.
+/// specializations of this function:
+///
+/// #[
+/// #show raw: set text(6pt)
+///
+/// ```typst
+/// #let definition  = theofig.with(kind: "definition",  supplement: "Definition",  translate-supplement: true)
+/// #let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem",     translate-supplement: true)
+/// #let proof       = theofig.with(kind: "proof",       supplement: "Proof",       translate-supplement: true, 
+///                                                                                 numbering: none, qed: true)
+///
+/// #let lemma       = theofig.with(kind: "lemma",       supplement: "Lemma",       translate-supplement: true)
+/// #let statement   = theofig.with(kind: "statement",   supplement: "Statement",   translate-supplement: true)
+/// #let remark      = theofig.with(kind: "remark",      supplement: "Remark",      translate-supplement: true)
+/// #let proposition = theofig.with(kind: "proposition", supplement: "Proposition", translate-supplement: true)
+/// #let corollary   = theofig.with(kind: "corollary",   supplement: "Corollary",   translate-supplement: true, 
+///                                                                                            numbering: none)
+///
+/// #let example     = theofig.with(kind: "example",     supplement: "Example",     translate-supplement: true)
+/// #let algorithm   = theofig.with(kind: "algorithm",   supplement: "Algorithm",   translate-supplement: true)
+/// #let problem     = theofig.with(kind: "problem",     supplement: "Problem",     translate-supplement: true)
+/// #let solution    = theofig.with(kind: "solution",    supplement: "Solution",    translate-supplement: true, 
+///                                                                                            numbering: none)
+/// ```]
+/// If you wish this list were extended, open an issue in repository, and it will probably added shortly.
 /// 
 /// - body (content): The contents of the environment.
 ///   === Example
@@ -384,17 +408,17 @@
   "solution",
 )
 
-#let definition  = theofig.with(kind: "definition",  supplement: "Definition", translate-supplement: true)
-#let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem", translate-supplement: true)
-#let proof       = theofig.with(kind: "proof", numbering: none, qed: true, translate-supplement: true)
+#let definition  = theofig.with(kind: "definition",  supplement: "Definition",  translate-supplement: true)
+#let theorem     = theofig.with(kind: "theorem",     supplement: "Theorem",     translate-supplement: true)
+#let proof       = theofig.with(kind: "proof",       supplement: "Proof",       translate-supplement: true, numbering: none, qed: true)
 
-#let lemma       = theofig.with(kind: "lemma",       supplement: "Lemma", translate-supplement: true)
-#let statement   = theofig.with(kind: "statement",   supplement: "Statement", translate-supplement: true)
-#let remark      = theofig.with(kind: "remark",      supplement: "Remark", translate-supplement: true)
-#let corollary   = theofig.with(kind: "corollary",   supplement: "Corollary", numbering: none, translate-supplement: true)
+#let lemma       = theofig.with(kind: "lemma",       supplement: "Lemma",       translate-supplement: true)
+#let statement   = theofig.with(kind: "statement",   supplement: "Statement",   translate-supplement: true)
+#let remark      = theofig.with(kind: "remark",      supplement: "Remark",      translate-supplement: true)
+#let corollary   = theofig.with(kind: "corollary",   supplement: "Corollary",   translate-supplement: true, numbering: none)
 #let proposition = theofig.with(kind: "proposition", supplement: "Proposition", translate-supplement: true)
 
-#let example     = theofig.with(kind: "example",     supplement: "Example", translate-supplement: true)
-#let algorithm   = theofig.with(kind: "algorithm",   supplement: "Algorithm", translate-supplement: true)
-#let problem     = theofig.with(kind: "problem",     supplement: "Problem", translate-supplement: true)
-#let solution    = theofig.with(kind: "solution",    supplement: "Solution", numbering: none, translate-supplement: true)
+#let example     = theofig.with(kind: "example",     supplement: "Example",     translate-supplement: true)
+#let algorithm   = theofig.with(kind: "algorithm",   supplement: "Algorithm",   translate-supplement: true)
+#let problem     = theofig.with(kind: "problem",     supplement: "Problem",     translate-supplement: true)
+#let solution    = theofig.with(kind: "solution",    supplement: "Solution",    translate-supplement: true, numbering: none)
