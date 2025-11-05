@@ -137,7 +137,7 @@
 #theorem[Lorem][#lorem(10)]
 
 #proof[It follows from @theorem-1.]
-```),
+```)
 
 
 
