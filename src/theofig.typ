@@ -278,6 +278,11 @@
   if numbering != auto {
     figure-options += (numbering: numbering)
   }
+// #show figure-where-kind-in(theofig-kinds): it => {
+//   set block(breakable: true )
+//   it
+// }
+  show figure: set block(breakable: true)
   figure(
     // placement: none, 
     kind: kind, 
@@ -286,7 +291,6 @@
     block(
       width: 100%,
       breakable: true,
-      sticky: true,
       ..block-options,
       context {
         let body = body
