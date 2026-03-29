@@ -24,6 +24,7 @@
   "lemma",
   "problem",
   "proof",
+  "proposition",
   "remark", 
   "solution",
   "statement",
