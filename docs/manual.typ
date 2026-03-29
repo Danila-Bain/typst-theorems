@@ -1,4 +1,4 @@
-#import "/theofig.typ" as theofig-module: *
+#import "../theofig.typ" as theofig-module: *
 
 #import "/docs/doc-style.typ"
 #let tidy = doc-style.tidy
