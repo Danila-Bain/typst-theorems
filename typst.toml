@@ -1,7 +1,7 @@
 [package]
 name = "theofig"
-version = "0.1.0"
-compiler = "0.13.0"
+version = "0.2.0"
+compiler = "0.14.0"
 entrypoint = "theofig.typ"
 authors = ["Danila Bain <danila.bain@yandex.com>"]
 license = "MIT"
