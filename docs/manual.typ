@@ -1,4 +1,4 @@
-#import "../theofig.typ" as theofig-module: *
+#import "/theofig.typ" as theofig-module: *
 
 #import "/docs/doc-style.typ"
 #let tidy = doc-style.tidy
@@ -296,7 +296,9 @@ you just need to have them have the same #param[theofig][kind], but different
 #code-example-row(```typ
 #let lemma     = lemma.with(kind: "theorem")
 #let statement = statement.with(kind: "theorem")
-
+#show figure.where(kind: "theorem"): it => {
+    show figure.caption: text.with(blue); it
+  }
 #theorem[#lorem(5)]
 #lemma[#lorem(5)]
 #statement[#lorem(5)]
@@ -310,8 +312,14 @@ styling can be applied individually through setting arguments
 #param[theofig][format-caption], #param[theofig][format-body],
 #param[theofig][block-options], and #param[theofig][figure-options].
 #code-example-row(```typ
+#show figure.where(kind: "theorem"): it => {
+    show figure.caption: text.with(blue); it
+  }
 #let theorem = theorem.with(
-  format-body: emph,
+  kind: "theorem",
+  block-options: (
+    stroke: 1pt, radius: 3pt, inset: 5pt,
+  ),
 )
 #let lemma     = lemma.with(
   kind: "theorem",
@@ -319,21 +327,19 @@ styling can be applied individually through setting arguments
 )
 #let statement = statement.with(
   kind: "theorem",
-  block-options: (
-    stroke: 1pt, radius: 3pt, inset: 5pt,
-  ),
+  format-body: emph,
 )
 
 #theorem[#lorem(5)]
 #lemma[#lorem(5)]
-#lemma[#lorem(5)]
+#statement[#lorem(5)]
 ```)
 
 == Show rules to specify a style
 
 All environments are `figure`'s under the hood, and they can be styled
 using show rules. The title of environment, such as "*Theorem 4 (Cauchy).*"
-can be style using `show figure.caption: ...` rules.
+can be styled using show rules for `figure.caption`.
 
 #code-example-row(```typ
 // apply to one
@@ -411,6 +417,39 @@ sticky with something like \
 #solution[Line to the left. #lorem(16)]
 ```)
 
+== Page breaking
+
+To enable page breaking of theorem environments, one must
+add 
+
+```typ #show figure-where-kind-in(theofig-kinds): set block(breakable: true)```
+
+line to the preambule. This show rule is set by user and not done
+internally because setting block options of figure is impossible without
+a show rule, and doing this before labels are attached to the figures 
+leads to "cannot reference styled" issues.
+
+#code-example-row(```typ
+#show figure-where-kind-in(theofig-kinds): set block(breakable: true) 
+// #show figure: set block(breakable: true) // alternative
+
+#set text(0.7em)
+#show figure-where-kind-in(theofig-kinds): block.with(
+  stroke: 1pt, inset: 5pt, radius: 5pt,
+)
+
+#block(
+  width: 100%, height: 150pt, 
+  stroke: 1pt + blue, inset: 5pt,
+)[
+  #columns(3)[
+    #example[#lorem(60)]<example-1>
+
+    Then we can reference @example-1.
+  ]
+]
+```)
+
 == Limitations
 
 Because #fn[theofig] implemented as figure, show rules applied to it affect
@@ -433,6 +472,7 @@ nested figures of any kind, including images and tables:
   ]
 ]
 ```)
+
 In this example, `smallcaps` is applied not only to the #fn[example] title, but
 also to the actual `figure`'s caption, the same is true for numbering. 
 It is an undesirable limitation, which leads us to either moving our figures
