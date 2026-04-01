@@ -278,11 +278,6 @@
   if numbering != auto {
     figure-options += (numbering: numbering)
   }
-// #show figure-where-kind-in(theofig-kinds): it => {
-//   set block(breakable: true )
-//   it
-// }
-  show figure: set block(breakable: true)
   figure(
     // placement: none, 
     kind: kind, 
@@ -360,7 +355,14 @@
         set par(first-line-indent: par.first-line-indent + (all: false))
 
         set align(left)
-        [#box(figure.caption(supplement)) #body #if (qed) { h(1fr); math.qed }]
+        [
+          #box(figure.caption(supplement)) 
+          #if (qed) {
+            body;  h(1fr); math.qed 
+          } else {
+            body;
+          }
+        ]
       }
     )
   )
