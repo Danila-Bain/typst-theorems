@@ -11,7 +11,8 @@ Import as
 ## Documentation
 
 For detailed guide and documentation see 
-[manual](https://github.com/Danila-Bain/typst-theorems/blob/v0.1.0/docs/manual.pdf).
+[manual](https://github.com/Danila-Bain/typst-theorems/blob/v0.2.0/docs/manual.pdf).
+
 
 ## Features
 
