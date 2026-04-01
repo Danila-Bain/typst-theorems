@@ -5,7 +5,7 @@ An implementation of theorem environments for
 
 Import as
 ```typ
-#import "@preview/theofig:0.1.0": *
+#import "@preview/theofig:0.2.0": *
 ```
 
 ## Documentation
@@ -43,7 +43,7 @@ For detailed guide and documentation see
 ### Basic usage
 
 ```typ
-#import "@preview/theofig:0.1.0": *
+#import "@preview/theofig:0.2.0": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #definition[#lorem(5)]<def-1>
@@ -65,7 +65,7 @@ For detailed guide and documentation see
 
 ### Custom environments
 ```typ
-#import "@preview/theofig:0.1.0": theofig, problem, solution
+#import "@preview/theofig:0.2.0": theofig, problem, solution
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #let hard-problem = theofig.with(
@@ -100,7 +100,7 @@ For detailed guide and documentation see
 ### Language support
 
 ```typ
-#import "@preview/theofig:0.1.0": *
+#import "@preview/theofig:0.2.0": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #for lang in theofig-translations.keys() [
@@ -114,7 +114,7 @@ For detailed guide and documentation see
 ### Per-section numbering 
 
 ```typ
-#import "@preview/theofig:0.1.0": *
+#import "@preview/theofig:0.2.0": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 #let thm-numbering(n) = numbering("1.1", counter(heading).get().first(), n)
@@ -152,7 +152,7 @@ Note that @th-add-2 about @eq-add-2 and
 ### Styling
 
 ```typ
-#import "@preview/theofig:0.1.0": *
+#import "@preview/theofig:0.2.0": *
 #set page(paper: "a6", height: auto, margin: 6mm)
 
 // show rule for all (optionally except some)
