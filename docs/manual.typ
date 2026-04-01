@@ -450,6 +450,45 @@ leads to "cannot reference styled" issues.
 ]
 ```)
 
+Example with styled breakpoints for the blocks
+(see #link("https://sitandr.github.io/typst-examples-book/book/typstonomicon/block_break.html#implementation-via-headers-footers-and-stated")[
+  Breakpoints on broken blocks]).
+
+
+#code-example-row(```typ
+#show figure-where-kind-in(theofig-kinds): set block(breakable: true) 
+
+#set text(0.6em)
+#show figure-where-kind-in(
+  theofig-kinds, except: "example"
+): theofig-split-box
+#show figure.where(kind: "example"): theofig-split-box.with(
+  stroke: (left: 1pt, bottom: 1pt, between: (dash: "dotted")),
+  inset: 5pt,
+)
+
+#block(
+  width: 100%, height: 150pt, 
+  stroke: 1pt + blue, inset: 5pt,
+)[
+  #columns(3)[
+    #theorem[#lorem(80)]<theorem-split-box>
+
+    Then we can reference @theorem-split-box.
+  ]
+]
+#block(
+  width: 100%, height: 150pt, 
+  stroke: 1pt + blue, inset: 5pt,
+)[
+  #columns(3)[
+    #example[#lorem(90)]<example-split-box>
+
+    Then we can reference @example-split-box.
+  ]
+]
+```)
+
 == Limitations
 
 Because #fn[theofig] implemented as figure, show rules applied to it affect
@@ -525,3 +564,4 @@ like in the following example, using parameters
 #show-module("/src/utils.typ")
 #show-module("/src/theofig-kinds.typ")
 #show-module("/src/translations.typ")
+#show-module("/src/split-box.typ")

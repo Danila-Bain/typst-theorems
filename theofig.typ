@@ -5,6 +5,7 @@
   show-figure-caption, 
   theofig-reset-counters
 )
+#import "src/split-box.typ": theofig-split-box
 
 
 #import "src/theofig-kinds.typ": (
